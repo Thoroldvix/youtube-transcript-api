@@ -1,0 +1,152 @@
+name: Publish javadoc (GitHub Pages)
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build_package_javadoc:
+    name: Generate Javadoc
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '21'
+
+      - uses: gradle/actions/wrapper-validation@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3.3.2
+        with:
+          cache-read-only: true
+
+      - name: Generate javadoc (gradle)
+        run: ./gradlew javadoc
+
+      - name: Conclude javadoc version and set env
+        run: |
+          if [[ "$GITHUB_REF" == "refs/heads/main" || "$GITHUB_REF" == "refs/heads/master" ]]; then
+            echo "PUBLISH_VERSION=current" >> $GITHUB_ENV
+          else
+            echo "PUBLISH_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+          fi
+
+      - name: zip javadoc folder
+        env:
+          LIBRARY_NAME: ${{ env.LIBRARY_NAME }}
+        run: |
+          cd "lib/build/docs/javadoc"
+          zip -r ../../../../javadoc.zip .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: javadoc.zip
+          path: javadoc.zip
+
+  deploy_javadoc:
+    name: Deploy (GH Pages)
+    runs-on: ubuntu-latest
+    needs: build_package_javadoc
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.CI_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Checkout or create empty branch 'gh-pages'
+        run: |
+          git fetch origin gh-pages || true
+          git checkout gh-pages || git switch --orphan gh-pages
+
+      - name: Conclude javadoc version and set env
+        run: |
+          if [[ "$GITHUB_REF" == "refs/heads/main" || "$GITHUB_REF" == "refs/heads/master" ]]; then
+            echo "PUBLISH_VERSION=current" >> $GITHUB_ENV
+          else
+            echo "PUBLISH_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+          fi
+
+      - name: Create root index redirect
+        env:
+          GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
+        run: |
+          echo "<!DOCTYPE html><html lang=en><meta content=\"text/html; charset=utf-8\"http-equiv=Content-Type><meta content=\"index redirect\"name=description><link href=/$GITHUB_REPOSITORY_NAME/javadoc/ rel=canonical><link href=stylesheet.css rel=stylesheet title=Style><script>window.location.replace(\"/$GITHUB_REPOSITORY_NAME/javadoc/\")</script><noscript><meta content=0;/$GITHUB_REPOSITORY_NAME/javadoc/ http-equiv=Refresh></noscript><main role=main><noscript><p>JavaScript is disabled on your browser.</p></noscript><p><a href=/$GITHUB_REPOSITORY_NAME/javadoc/ >/$GITHUB_REPOSITORY_NAME/javadoc/</a></main>" > index.html
+
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: javadoc.zip
+
+      - name: unzip javadoc folder
+        env:
+          PUBLISH_VERSION: ${{ env.PUBLISH_VERSION }}
+        run: |
+          mkdir -p javadoc
+          rm -Rf "javadoc/$PUBLISH_VERSION" || true
+          unzip -d "javadoc/$PUBLISH_VERSION" javadoc.zip
+          rm javadoc.zip
+
+      - name: Create javadoc index.html listing versions
+        env:
+          PUBLISH_VERSION: ${{ env.PUBLISH_VERSION }}
+          GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
+        run: |
+          mkdir -p javadoc
+          rm javadoc/index.html || true
+          touch javadoc/index.html
+          
+          versions=( $(cd javadoc && find . -maxdepth 1 -type d | jq -srR 'split("\n") | unique | .[][2:] | select(length > 0)') )
+          
+          echo "javadoc versions:"
+          for value in "${versions[@]}"
+          do
+            echo "- $value"
+          done
+          
+          echo "<!DOCTYPE HTML>" >> javadoc/index.html
+          echo "<html lang=\"en\">" >> javadoc/index.html
+          echo "<head>" >> javadoc/index.html
+          echo "    <title>Javadoc | '$GITHUB_REPOSITORY_NAME'</title>" >> javadoc/index.html
+          echo "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" >> javadoc/index.html
+          echo "    <meta charset=\"UTF-8\">" >> javadoc/index.html
+          echo "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" >> javadoc/index.html
+          echo "    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">" >> javadoc/index.html
+          echo "    <meta name=\"description\" content=\"Javadoc for library '$GITHUB_REPOSITORY_NAME'\">" >> javadoc/index.html
+          echo "</head>" >> javadoc/index.html
+          echo "<body>" >> javadoc/index.html
+          echo "<main style=\"font-family: sans-serif;\">" >> javadoc/index.html
+          echo "    <h1>Javadoc</h1>" >> javadoc/index.html
+          echo "    <h2>Versions</h2>" >> javadoc/index.html
+          echo "    <ul>" >> javadoc/index.html
+          
+          for value in "${versions[@]}"
+          do
+            echo "        <li><a href=\"$value\">$value</a></li>" >> javadoc/index.html
+          done
+          
+          echo "    </ul>" >> javadoc/index.html
+          echo "</main>" >> javadoc/index.html
+          echo "</body>" >> javadoc/index.html
+          echo "</html>" >> javadoc/index.html
+
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git status
+          git diff-index --quiet HEAD || git commit -m "chore: update index.html files incl. javadoc versions"
+
+      # Push changes
+      - name: Push changes
+        run: |
+          git push --set-upstream origin gh-pages

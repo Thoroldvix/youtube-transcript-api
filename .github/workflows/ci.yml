@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - '*'
+  pull_request:
+    branches: [ '*' ]
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Release Library'
+        required: true
+        default: '...no release'
+        type: choice
+        options:
+          - '...no release'
+          - major
+          - minor
+          - patch
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/callable.build.yml
+    if: | # avoid unnecessary pipeline runs during artifact release process ('gradle release plugin')
+      !contains(github.event.head_commit.message, 'chore: bump current version to')
+      || github.ref_type == 'tag'
+
+  gradle-release:
+    name: Create Release
+    uses: ./.github/workflows/callable.gradle-release.yml
+    secrets: inherit
+    with:
+      type: ${{ inputs.type }}
+    needs: build
+    if: |
+      github.event_name == 'workflow_dispatch'
+      && inputs.type != '...no release'
+
+  publish_sonatype:
+    name: Publish artifact (Maven Central)
+    uses: ./.github/workflows/callable.publish-sonatype.yml
+    secrets: inherit
+    needs: build
+    if: |
+      (
+        github.event_name != 'workflow_dispatch'
+        || inputs.type == '...no release'
+      ) && ( 
+        github.ref == 'refs/heads/main' 
+        || github.ref_type == 'tag' 
+      )
+
+  publish_javadoc:
+    name: Publish Javadoc to GitHub Pages
+    permissions:
+      contents: write
+    uses: ./.github/workflows/callable.publish-javadoc.yml
+    needs: build
+    if: |
+      (
+        github.ref == 'refs/heads/main'
+        && ( inputs.type == '' || inputs.type == '...no release' )
+      ) || github.ref_type == 'tag'
