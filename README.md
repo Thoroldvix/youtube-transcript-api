@@ -9,10 +9,6 @@
 
 ### This library uses undocumented YouTube API, so it's possible that it will stop working at any time. Use at your own risk.
 
-## 💡Quick start
-
-For a quick getting started, see [documentation](https://thoroldvix.github.io/youtube-transcript-api/javadoc/).
-
 ## 📖 Introduction
 
 Java library which allows you to retrieve subtitles/transcripts for a YouTube video.
