@@ -16,7 +16,6 @@ import static io.github.thoroldvix.api.YtApiV3Endpoint.*;
  * Default implementation of {@link PlaylistsTranscriptApi}
  */
 class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
-    private static final String MAX_RESULTS = "50";
     private final YoutubeClient client;
     private final YoutubeTranscriptApi youtubeTranscriptApi;
     private final ObjectMapper objectMapper;
@@ -34,20 +33,21 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
 
         for (String videoId : videoIds) {
             try {
-                TranscriptList transcriptList;
-                if (cookiesPath != null) {
-                    transcriptList = youtubeTranscriptApi.listTranscriptsWithCookies(videoId, cookiesPath);
-                } else {
-                    transcriptList = youtubeTranscriptApi.listTranscripts(videoId);
-                }
+                TranscriptList transcriptList = getTranscriptList(videoId, cookiesPath);
                 transcriptLists.put(videoId, transcriptList);
             } catch (TranscriptRetrievalException e) {
-                if (continueOnError) continue;
-                throw e;
+                if (!continueOnError) throw e;
             }
         }
 
         return transcriptLists;
+    }
+
+    private TranscriptList getTranscriptList(String videoId, String cookiesPath) throws TranscriptRetrievalException {
+        if (cookiesPath != null) {
+            return youtubeTranscriptApi.listTranscriptsWithCookies(videoId, cookiesPath);
+        }
+        return youtubeTranscriptApi.listTranscripts(videoId);
     }
 
     @Override
@@ -69,39 +69,33 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
 
 
     private String getChannelPlaylistId(String channelId, String apiKey) throws TranscriptRetrievalException {
-        HashMap<String, String> params = new HashMap<>(4);
-        params.put("key", apiKey);
-        params.put("part", "contentDetails");
-        params.put("id", channelId);
-
+        Map<String, String> params = createParams(
+                "key", apiKey,
+                "part", "contentDetails",
+                "id", channelId
+        );
         String channelJson = client.get(CHANNELS, params);
 
-        JsonNode jsonNode;
-        try {
-            jsonNode = objectMapper.readTree(channelJson);
-        } catch (JsonProcessingException e) {
-            throw new TranscriptRetrievalException("Could not parse channel JSON for the channel with id: " + channelId, e);
-        }
+        JsonNode jsonNode = parseJson(channelJson,
+                "Could not parse channel JSON for the channel with id: " + channelId);
+
         JsonNode channel = jsonNode.get("items").get(0);
 
         return channel.get("contentDetails").get("relatedPlaylists").get("uploads").asText();
     }
 
     private String getChannelId(String channelName, String apiKey) throws TranscriptRetrievalException {
-        Map<String, String> params = new HashMap<>(4);
-        params.put("key", apiKey);
-        params.put("q", channelName);
-        params.put("part", "snippet");
-        params.put("type", "channel");
+        Map<String, String> params = createParams(
+                "key", apiKey,
+                "q", channelName,
+                "part", "snippet",
+                "type", "channel"
+        );
 
         String searchJson = client.get(SEARCH, params);
 
-        JsonNode jsonNode;
-        try {
-            jsonNode = objectMapper.readTree(searchJson);
-        } catch (JsonProcessingException e) {
-            throw new TranscriptRetrievalException("Could not parse search JSON for the channel: " + channelName, e);
-        }
+        JsonNode jsonNode = parseJson(searchJson,
+                "Could not parse search JSON for the channel: " + channelName);
 
         for (JsonNode item : jsonNode.get("items")) {
             JsonNode snippet = item.get("snippet");
@@ -115,39 +109,57 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
 
 
     private List<String> getVideoIds(String playlistId, String apiKey) throws TranscriptRetrievalException {
-        Map<String, String> params = new HashMap<>(5);
-        params.put("key", apiKey);
-        params.put("maxResults", MAX_RESULTS);
-        params.put("playlistId", playlistId);
-        params.put("part", "snippet");
+        Map<String, String> params = createParams(
+                "key", apiKey,
+                "playlistId", playlistId,
+                "part", "snippet",
+                "maxResults", "50"
+        );
 
         List<String> videoIds = new ArrayList<>();
+
         while (true) {
             String playlistJson = client.get(PLAYLIST_ITEMS, params);
 
-            JsonNode jsonNode;
-            try {
-                jsonNode = objectMapper.readTree(playlistJson);
-            } catch (JsonProcessingException e) {
-                throw new TranscriptRetrievalException("Could not parse playlist JSON for the playlist: " + playlistId, e);
-            }
+            JsonNode jsonNode = parseJson(playlistJson,
+                    "Could not parse playlist JSON for the playlist: " + playlistId);
 
-            jsonNode.get("items").forEach(item -> {
-                String videoId = item.get("snippet")
-                        .get("resourceId")
-                        .get("videoId")
-                        .asText();
-                videoIds.add(videoId);
-            });
+            extractVideoId(jsonNode, videoIds);
 
             JsonNode nextPageToken = jsonNode.get("nextPageToken");
             if (nextPageToken == null) {
                 break;
             }
+
             params.put("pageToken", nextPageToken.asText());
         }
 
         return videoIds;
     }
 
+    private void extractVideoId(JsonNode jsonNode, List<String> videoIds) {
+        jsonNode.get("items").forEach(item -> {
+            String videoId = item.get("snippet")
+                    .get("resourceId")
+                    .get("videoId")
+                    .asText();
+            videoIds.add(videoId);
+        });
+    }
+
+    private Map<String, String> createParams(String... params) {
+        Map<String, String> map = new HashMap<>(params.length / 2);
+        for (int i = 0; i < params.length; i += 2) {
+            map.put(params[i], params[i + 1]);
+        }
+        return map;
+    }
+
+    private JsonNode parseJson(String json, String errorMessage) throws TranscriptRetrievalException {
+        try {
+            return objectMapper.readTree(json);
+        } catch (JsonProcessingException e) {
+            throw new TranscriptRetrievalException(errorMessage, e);
+        }
+    }
 }
