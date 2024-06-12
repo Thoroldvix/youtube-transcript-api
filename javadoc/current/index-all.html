@@ -49,12 +49,22 @@ loadScripts(document, 'script');</script>
 <div class="header">
 <h1>Index</h1>
 </div>
-<a href="#I:C">C</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:Y">Y</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a>
+<a href="#I:C">C</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:V">V</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:Y">Y</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a>
 <h2 class="title" id="I:C">C</h2>
 <dl class="index">
+<dt><a href="io/github/thoroldvix/api/YtApiV3Endpoint.html#CHANNELS" class="member-name-link">CHANNELS</a> - Enum constant in enum class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/YtApiV3Endpoint.html" title="enum class in io.github.thoroldvix.api">YtApiV3Endpoint</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/github/thoroldvix/internal/TranscriptApiFactory.html#createDefault()" class="member-name-link">createDefault()</a> - Static method in class io.github.thoroldvix.internal.<a href="io/github/thoroldvix/internal/TranscriptApiFactory.html" title="class in io.github.thoroldvix.internal">TranscriptApiFactory</a></dt>
 <dd>
 <div class="block">Creates a new instance of <a href="io/github/thoroldvix/api/YoutubeTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>YoutubeTranscriptApi</code></a> using the default YouTube client.</div>
+</dd>
+<dt><a href="io/github/thoroldvix/internal/TranscriptApiFactory.html#createDefaultPlaylistsApi()" class="member-name-link">createDefaultPlaylistsApi()</a> - Static method in class io.github.thoroldvix.internal.<a href="io/github/thoroldvix/internal/TranscriptApiFactory.html" title="class in io.github.thoroldvix.internal">TranscriptApiFactory</a></dt>
+<dd>
+<div class="block">Creates a new instance of <a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>PlaylistsTranscriptApi</code></a> using the default YouTube client.</div>
+</dd>
+<dt><a href="io/github/thoroldvix/internal/TranscriptApiFactory.html#createDefaultPlaylistsApi(io.github.thoroldvix.api.YoutubeClient)" class="member-name-link">createDefaultPlaylistsApi(YoutubeClient)</a> - Static method in class io.github.thoroldvix.internal.<a href="io/github/thoroldvix/internal/TranscriptApiFactory.html" title="class in io.github.thoroldvix.internal">TranscriptApiFactory</a></dt>
+<dd>
+<div class="block">Creates a new instance of <a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>PlaylistsTranscriptApi</code></a> using the specified <a href="io/github/thoroldvix/api/YoutubeClient.html" title="interface in io.github.thoroldvix.api"><code>YoutubeClient</code></a>.</div>
 </dd>
 <dt><a href="io/github/thoroldvix/internal/TranscriptApiFactory.html#createWithClient(io.github.thoroldvix.api.YoutubeClient)" class="member-name-link">createWithClient(YoutubeClient)</a> - Static method in class io.github.thoroldvix.internal.<a href="io/github/thoroldvix/internal/TranscriptApiFactory.html" title="class in io.github.thoroldvix.internal">TranscriptApiFactory</a></dt>
 <dd>
@@ -88,6 +98,10 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:G">G</h2>
 <dl class="index">
+<dt><a href="io/github/thoroldvix/api/YoutubeClient.html#get(io.github.thoroldvix.api.YtApiV3Endpoint,java.util.Map)" class="member-name-link">get(YtApiV3Endpoint, Map&lt;String, String&gt;)</a> - Method in interface io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/YoutubeClient.html" title="interface in io.github.thoroldvix.api">YoutubeClient</a></dt>
+<dd>
+<div class="block">Sends a GET request to the specified endpoint and returns the response body.</div>
+</dd>
 <dt><a href="io/github/thoroldvix/api/YoutubeClient.html#get(java.lang.String,java.util.Map)" class="member-name-link">get(String, Map&lt;String, String&gt;)</a> - Method in interface io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/YoutubeClient.html" title="interface in io.github.thoroldvix.api">YoutubeClient</a></dt>
 <dd>
 <div class="block">Sends a GET request to the specified URL and returns the response body.</div>
@@ -136,6 +150,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Gets the video id of the transcript.</div>
 </dd>
+<dt><a href="io/github/thoroldvix/api/TranscriptList.html#getVideoId()" class="member-name-link">getVideoId()</a> - Method in interface io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/TranscriptList.html" title="interface in io.github.thoroldvix.api">TranscriptList</a></dt>
+<dd>
+<div class="block">Retrieves the ID of the video to which transcript was retrieved.</div>
+</dd>
 <dt><a href="io/github/thoroldvix/api/TranscriptRetrievalException.html#getVideoId()" class="member-name-link">getVideoId()</a> - Method in exception class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -167,6 +185,22 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Retrieves a list of available transcripts for a given video.</div>
 </dd>
+<dt><a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html#listTranscriptsForChannel(java.lang.String,java.lang.String,boolean)" class="member-name-link">listTranscriptsForChannel(String, String, boolean)</a> - Method in interface io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api">PlaylistsTranscriptApi</a></dt>
+<dd>
+<div class="block">Retrieves transcript lists for all videos for the specified channel using provided API key.</div>
+</dd>
+<dt><a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html#listTranscriptsForChannel(java.lang.String,java.lang.String,java.lang.String,boolean)" class="member-name-link">listTranscriptsForChannel(String, String, String, boolean)</a> - Method in interface io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api">PlaylistsTranscriptApi</a></dt>
+<dd>
+<div class="block">Retrieves transcript lists for all videos for the specified channel using provided API key and cookies file from a specified path.</div>
+</dd>
+<dt><a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html#listTranscriptsForPlaylist(java.lang.String,java.lang.String,boolean)" class="member-name-link">listTranscriptsForPlaylist(String, String, boolean)</a> - Method in interface io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api">PlaylistsTranscriptApi</a></dt>
+<dd>
+<div class="block">Retrieves transcript lists for all videos in the specified playlist using provided API key.</div>
+</dd>
+<dt><a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html#listTranscriptsForPlaylist(java.lang.String,java.lang.String,java.lang.String,boolean)" class="member-name-link">listTranscriptsForPlaylist(String, String, String, boolean)</a> - Method in interface io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api">PlaylistsTranscriptApi</a></dt>
+<dd>
+<div class="block">Retrieves transcript lists for all videos in the specified playlist using provided API key and cookies file from a specified path.</div>
+</dd>
 <dt><a href="io/github/thoroldvix/api/YoutubeTranscriptApi.html#listTranscriptsWithCookies(java.lang.String,java.lang.String)" class="member-name-link">listTranscriptsWithCookies(String, String)</a> - Method in interface io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/YoutubeTranscriptApi.html" title="interface in io.github.thoroldvix.api">YoutubeTranscriptApi</a></dt>
 <dd>
 <div class="block">Retrieves a list of available transcripts for a given video using cookies from a specified file path.</div>
@@ -174,6 +208,12 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:P">P</h2>
 <dl class="index">
+<dt><a href="io/github/thoroldvix/api/YtApiV3Endpoint.html#PLAYLIST_ITEMS" class="member-name-link">PLAYLIST_ITEMS</a> - Enum constant in enum class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/YtApiV3Endpoint.html" title="enum class in io.github.thoroldvix.api">YtApiV3Endpoint</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html" class="type-name-link" title="interface in io.github.thoroldvix.api">PlaylistsTranscriptApi</a> - Interface in <a href="io/github/thoroldvix/api/package-summary.html">io.github.thoroldvix.api</a></dt>
+<dd>
+<div class="block">Retrieves transcripts for all videos in a playlist, or all videos for a specific channel.</div>
+</dd>
 <dt><a href="io/github/thoroldvix/api/TranscriptFormatters.html#prettyJsonFormatter()" class="member-name-link">prettyJsonFormatter()</a> - Static method in class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/TranscriptFormatters.html" title="class in io.github.thoroldvix.api">TranscriptFormatters</a></dt>
 <dd>
 <div class="block">Creates a <a href="io/github/thoroldvix/api/TranscriptFormatter.html" title="interface in io.github.thoroldvix.api"><code>TranscriptFormatter</code></a> that formats transcript content as pretty-printed JSON.</div>
@@ -181,6 +221,8 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:S">S</h2>
 <dl class="index">
+<dt><a href="io/github/thoroldvix/api/YtApiV3Endpoint.html#SEARCH" class="member-name-link">SEARCH</a> - Enum constant in enum class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/YtApiV3Endpoint.html" title="enum class in io.github.thoroldvix.api">YtApiV3Endpoint</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/github/thoroldvix/api/TranscriptFormatters.html#srtFormatter()" class="member-name-link">srtFormatter()</a> - Static method in class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/TranscriptFormatters.html" title="class in io.github.thoroldvix.api">TranscriptFormatters</a></dt>
 <dd>
 <div class="block">Creates a <a href="io/github/thoroldvix/api/TranscriptFormatter.html" title="interface in io.github.thoroldvix.api"><code>TranscriptFormatter</code></a> that formats transcript content as SRT (SubRip) subtitles.</div>
@@ -192,13 +234,15 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Creates a <a href="io/github/thoroldvix/api/TranscriptFormatter.html" title="interface in io.github.thoroldvix.api"><code>TranscriptFormatter</code></a> that formats transcript content as plain text without timestamps.</div>
 </dd>
+<dt><a href="io/github/thoroldvix/api/YtApiV3Endpoint.html#toString()" class="member-name-link">toString()</a> - Method in enum class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/YtApiV3Endpoint.html" title="enum class in io.github.thoroldvix.api">YtApiV3Endpoint</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/github/thoroldvix/api/Transcript.html" class="type-name-link" title="interface in io.github.thoroldvix.api">Transcript</a> - Interface in <a href="io/github/thoroldvix/api/package-summary.html">io.github.thoroldvix.api</a></dt>
 <dd>
 <div class="block">Represents a single transcript for a YouTube video, including its metadata.</div>
 </dd>
 <dt><a href="io/github/thoroldvix/internal/TranscriptApiFactory.html" class="type-name-link" title="class in io.github.thoroldvix.internal">TranscriptApiFactory</a> - Class in <a href="io/github/thoroldvix/internal/package-summary.html">io.github.thoroldvix.internal</a></dt>
 <dd>
-<div class="block">Class for creating instances of <a href="io/github/thoroldvix/api/YoutubeTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>YoutubeTranscriptApi</code></a>.</div>
+<div class="block">Responsible for creating instances of <a href="io/github/thoroldvix/api/YoutubeTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>YoutubeTranscriptApi</code></a> and <a href="io/github/thoroldvix/api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>PlaylistsTranscriptApi</code></a>.</div>
 </dd>
 <dt><a href="io/github/thoroldvix/api/TranscriptContent.html" class="type-name-link" title="interface in io.github.thoroldvix.api">TranscriptContent</a> - Interface in <a href="io/github/thoroldvix/api/package-summary.html">io.github.thoroldvix.api</a></dt>
 <dd>
@@ -224,6 +268,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Exception thrown when a transcript cannot be retrieved for a specified video.</div>
 </dd>
+<dt><a href="io/github/thoroldvix/api/TranscriptRetrievalException.html#%3Cinit%3E(java.lang.String)" class="member-name-link">TranscriptRetrievalException(String)</a> - Constructor for exception class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></dt>
+<dd>
+<div class="block">Constructs a new exception with the specified detail message.</div>
+</dd>
 <dt><a href="io/github/thoroldvix/api/TranscriptRetrievalException.html#%3Cinit%3E(java.lang.String,java.lang.String)" class="member-name-link">TranscriptRetrievalException(String, String)</a> - Constructor for exception class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></dt>
 <dd>
 <div class="block">Constructs a new exception with the specified detail message.</div>
@@ -232,9 +280,30 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Constructs a new exception with the specified detail message and cause.</div>
 </dd>
+<dt><a href="io/github/thoroldvix/api/TranscriptRetrievalException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">TranscriptRetrievalException(String, Throwable)</a> - Constructor for exception class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></dt>
+<dd>
+<div class="block">Constructs a new exception with the specified detail message and cause.</div>
+</dd>
 <dt><a href="io/github/thoroldvix/api/Transcript.html#translate(java.lang.String)" class="member-name-link">translate(String)</a> - Method in interface io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/Transcript.html" title="interface in io.github.thoroldvix.api">Transcript</a></dt>
 <dd>
 <div class="block">Translates the transcript into the specified language.</div>
+</dd>
+</dl>
+<h2 class="title" id="I:U">U</h2>
+<dl class="index">
+<dt><a href="io/github/thoroldvix/api/YtApiV3Endpoint.html#url()" class="member-name-link">url()</a> - Method in enum class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/YtApiV3Endpoint.html" title="enum class in io.github.thoroldvix.api">YtApiV3Endpoint</a></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 class="title" id="I:V">V</h2>
+<dl class="index">
+<dt><a href="io/github/thoroldvix/api/YtApiV3Endpoint.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/YtApiV3Endpoint.html" title="enum class in io.github.thoroldvix.api">YtApiV3Endpoint</a></dt>
+<dd>
+<div class="block">Returns the enum constant of this class with the specified name.</div>
+</dd>
+<dt><a href="io/github/thoroldvix/api/YtApiV3Endpoint.html#values()" class="member-name-link">values()</a> - Static method in enum class io.github.thoroldvix.api.<a href="io/github/thoroldvix/api/YtApiV3Endpoint.html" title="enum class in io.github.thoroldvix.api">YtApiV3Endpoint</a></dt>
+<dd>
+<div class="block">Returns an array containing the constants of this enum class, in
+the order they are declared.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:W">W</h2>
@@ -254,8 +323,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">This is the main interface for the YouTube Transcript API.</div>
 </dd>
+<dt><a href="io/github/thoroldvix/api/YtApiV3Endpoint.html" class="type-name-link" title="enum class in io.github.thoroldvix.api">YtApiV3Endpoint</a> - Enum Class in <a href="io/github/thoroldvix/api/package-summary.html">io.github.thoroldvix.api</a></dt>
+<dd>
+<div class="block">The YouTube API V3 endpoints.</div>
+</dd>
 </dl>
-<a href="#I:C">C</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:Y">Y</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a></main>
+<a href="#I:C">C</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:V">V</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:Y">Y</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a></main>
 </div>
 </div>
 </body>

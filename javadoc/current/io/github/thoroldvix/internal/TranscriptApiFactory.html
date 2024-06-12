@@ -91,7 +91,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">TranscriptApiFactory</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">Class for creating instances of <a href="../api/YoutubeTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>YoutubeTranscriptApi</code></a>.</div>
+<div class="block">Responsible for creating instances of <a href="../api/YoutubeTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>YoutubeTranscriptApi</code></a> and <a href="../api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>PlaylistsTranscriptApi</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -110,6 +110,16 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createDefault()" class="member-name-link">createDefault</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Creates a new instance of <a href="../api/YoutubeTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>YoutubeTranscriptApi</code></a> using the default YouTube client.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api">PlaylistsTranscriptApi</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createDefaultPlaylistsApi()" class="member-name-link">createDefaultPlaylistsApi</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a new instance of <a href="../api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>PlaylistsTranscriptApi</code></a> using the default YouTube client.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api">PlaylistsTranscriptApi</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createDefaultPlaylistsApi(io.github.thoroldvix.api.YoutubeClient)" class="member-name-link">createDefaultPlaylistsApi</a><wbr>(<a href="../api/YoutubeClient.html" title="interface in io.github.thoroldvix.api">YoutubeClient</a>&nbsp;client)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a new instance of <a href="../api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>PlaylistsTranscriptApi</code></a> using the specified <a href="../api/YoutubeClient.html" title="interface in io.github.thoroldvix.api"><code>YoutubeClient</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../api/YoutubeTranscriptApi.html" title="interface in io.github.thoroldvix.api">YoutubeTranscriptApi</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createWithClient(io.github.thoroldvix.api.YoutubeClient)" class="member-name-link">createWithClient</a><wbr>(<a href="../api/YoutubeClient.html" title="interface in io.github.thoroldvix.api">YoutubeClient</a>&nbsp;client)</code></div>
@@ -141,6 +151,30 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>A new instance of <a href="../api/YoutubeTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>YoutubeTranscriptApi</code></a></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createDefaultPlaylistsApi(io.github.thoroldvix.api.YoutubeClient)">
+<h3>createDefaultPlaylistsApi</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api">PlaylistsTranscriptApi</a></span>&nbsp;<span class="element-name">createDefaultPlaylistsApi</span><wbr><span class="parameters">(<a href="../api/YoutubeClient.html" title="interface in io.github.thoroldvix.api">YoutubeClient</a>&nbsp;client)</span></div>
+<div class="block">Creates a new instance of <a href="../api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>PlaylistsTranscriptApi</code></a> using the specified <a href="../api/YoutubeClient.html" title="interface in io.github.thoroldvix.api"><code>YoutubeClient</code></a>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>client</code> - The <a href="../api/YoutubeClient.html" title="interface in io.github.thoroldvix.api"><code>YoutubeClient</code></a> to be used for YouTube interactions</dd>
+<dt>Returns:</dt>
+<dd>A new instance of <a href="../api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>PlaylistsTranscriptApi</code></a></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createDefaultPlaylistsApi()">
+<h3>createDefaultPlaylistsApi</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api">PlaylistsTranscriptApi</a></span>&nbsp;<span class="element-name">createDefaultPlaylistsApi</span>()</div>
+<div class="block">Creates a new instance of <a href="../api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>PlaylistsTranscriptApi</code></a> using the default YouTube client.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>A new instance of <a href="../api/PlaylistsTranscriptApi.html" title="interface in io.github.thoroldvix.api"><code>PlaylistsTranscriptApi</code></a></dd>
 </dl>
 </section>
 </li>

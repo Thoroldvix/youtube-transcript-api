@@ -85,13 +85,8 @@ loadScripts(document, 'script');</script>
 <h1 title="Interface YoutubeClient" class="title">Interface YoutubeClient</h1>
 </div>
 <section class="class-description" id="class-description">
-<dl class="notes">
-<dt>Functional Interface:</dt>
-<dd>This is a functional interface and can therefore be used as the assignment target for a lambda expression or method reference.</dd>
-</dl>
 <hr>
-<div class="type-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/FunctionalInterface.html" title="class or interface in java.lang" class="external-link">@FunctionalInterface</a>
-</span><span class="modifiers">public interface </span><span class="element-name type-name-label">YoutubeClient</span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">YoutubeClient</span></div>
 <div class="block">Responsible for sending GET requests to YouTube.</div>
 </section>
 <section class="summary">
@@ -108,9 +103,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#get(java.lang.String,java.util.Map)" class="member-name-link">get</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;url,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;headers)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#get(io.github.thoroldvix.api.YtApiV3Endpoint,java.util.Map)" class="member-name-link">get</a><wbr>(<a href="YtApiV3Endpoint.html" title="enum class in io.github.thoroldvix.api">YtApiV3Endpoint</a>&nbsp;endpoint,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;params)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Sends a GET request to the specified endpoint and returns the response body.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#get(java.lang.String,java.util.Map)" class="member-name-link">get</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;url,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;headers)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Sends a GET request to the specified URL and returns the response body.</div>
 </div>
 </div>
@@ -138,6 +139,24 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>url</code> - The URL to which the GET request is made.</dd>
 <dd><code>headers</code> - A map of additional headers to include in the request.</dd>
+<dt>Returns:</dt>
+<dd>The body of the response as a <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a>.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></code> - If the request to YouTube fails.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="get(io.github.thoroldvix.api.YtApiV3Endpoint,java.util.Map)">
+<h3>get</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">get</span><wbr><span class="parameters">(<a href="YtApiV3Endpoint.html" title="enum class in io.github.thoroldvix.api">YtApiV3Endpoint</a>&nbsp;endpoint,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;params)</span>
+    throws <span class="exceptions"><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></span></div>
+<div class="block">Sends a GET request to the specified endpoint and returns the response body.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>endpoint</code> - The endpoint to which the GET request is made.</dd>
+<dd><code>params</code> - A map of parameters to include in the request.</dd>
 <dt>Returns:</dt>
 <dd>The body of the response as a <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a>.</dd>
 <dt>Throws:</dt>
