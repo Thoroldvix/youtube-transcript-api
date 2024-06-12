@@ -56,6 +56,13 @@ public interface TranscriptList extends Iterable<Transcript> {
      */
     Transcript findManualTranscript(String... languageCodes) throws TranscriptRetrievalException;
 
+    /**
+     * Retrieves the ID of the video to which transcript was retrieved.
+     *
+     * @return The video ID.
+     */
+    String getVideoId();
+
     @Override
     default void forEach(Consumer<? super Transcript> action) {
         Iterable.super.forEach(action);

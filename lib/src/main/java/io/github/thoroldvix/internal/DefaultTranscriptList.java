@@ -60,6 +60,11 @@ final class DefaultTranscriptList implements TranscriptList {
     }
 
     @Override
+    public String getVideoId() {
+        return videoId;
+    }
+
+    @Override
     public Iterator<Transcript> iterator() {
         return new Iterator<>() {
             private final Iterator<Transcript> manualIterator = manualTranscripts.values().iterator();
