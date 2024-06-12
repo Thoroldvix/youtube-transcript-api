@@ -10,7 +10,7 @@ public class TranscriptRetrievalException extends Exception {
 
     private static final String ERROR_MESSAGE = "Could not retrieve transcript for the video: %s.\nReason: %s";
     private static final String YOUTUBE_WATCH_URL = "https://www.youtube.com/watch?v=";
-    private final String videoId;
+    private String videoId;
 
     /**
      * Constructs a new exception with the specified detail message and cause.
@@ -36,10 +36,22 @@ public class TranscriptRetrievalException extends Exception {
     }
 
     /**
-     * @return The ID of the video for which the transcript retrieval failed.
+     * Constructs a new exception with the specified detail message and cause.
+     *
+     * @param message The detail message explaining the reason for the failure.
+     * @param cause   The cause of the failure (which is saved for later retrieval by the {@link Throwable#getCause()} method).
      */
-    public String getVideoId() {
-        return videoId;
+    public TranscriptRetrievalException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    /**
+     * Constructs a new exception with the specified detail message.
+     *
+     * @param message The detail message explaining the reason for the failure.
+     */
+    public TranscriptRetrievalException(String message) {
+        super(message);
     }
 
     /**
@@ -52,6 +64,13 @@ public class TranscriptRetrievalException extends Exception {
     private static String buildErrorMessage(String videoId, String message) {
         String videoUrl = YOUTUBE_WATCH_URL + videoId;
         return String.format(ERROR_MESSAGE, videoUrl, message);
+    }
+
+    /**
+     * @return The ID of the video for which the transcript retrieval failed.
+     */
+    public String getVideoId() {
+        return videoId;
     }
 }
 

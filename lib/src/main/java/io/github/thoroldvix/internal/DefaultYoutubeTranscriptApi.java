@@ -29,6 +29,38 @@ final class DefaultYoutubeTranscriptApi implements YoutubeTranscriptApi {
         this.fileLinesReader = fileLinesReader;
     }
 
+    private static HttpCookie createCookie(String[] parts) {
+        String domain = parts[0];
+        boolean secure = Boolean.parseBoolean(parts[1]);
+        String path = parts[2];
+        boolean httpOnly = Boolean.parseBoolean(parts[3]);
+        long expiration = Long.parseLong(parts[4]);
+        String name = parts[5];
+        String value = parts[6];
+
+        HttpCookie cookie = new HttpCookie(name, value);
+        cookie.setDomain(domain);
+        cookie.setPath(path);
+        cookie.setSecure(secure);
+        cookie.setHttpOnly(httpOnly);
+        cookie.setMaxAge(expiration);
+        return cookie;
+    }
+
+    private static boolean containsConsentPage(String videoPageHtml) {
+        String consentPagePattern = "action=\"https://consent.youtube.com/s\"";
+        return videoPageHtml.contains(consentPagePattern);
+    }
+
+    private static String extractConsentCookie(String videoId, String html) throws TranscriptRetrievalException {
+        Pattern consentCookiePattern = Pattern.compile("name=\"v\" value=\"(.*?)\"");
+        Matcher matcher = consentCookiePattern.matcher(html);
+        if (!matcher.find()) {
+            throw new TranscriptRetrievalException(videoId, FAILED_TO_GIVE_COOKIES_CONSENT);
+        }
+        return String.format("CONSENT=YES+%s", matcher.group(1));
+    }
+
     @Override
     public TranscriptList listTranscriptsWithCookies(String videoId, String cookiesPath) throws TranscriptRetrievalException {
         validateVideoId(videoId);
@@ -62,24 +94,6 @@ final class DefaultYoutubeTranscriptApi implements YoutubeTranscriptApi {
         }
     }
 
-    private static HttpCookie createCookie(String[] parts) {
-        String domain = parts[0];
-        boolean secure = Boolean.parseBoolean(parts[1]);
-        String path = parts[2];
-        boolean httpOnly = Boolean.parseBoolean(parts[3]);
-        long expiration = Long.parseLong(parts[4]);
-        String name = parts[5];
-        String value = parts[6];
-
-        HttpCookie cookie = new HttpCookie(name, value);
-        cookie.setDomain(domain);
-        cookie.setPath(path);
-        cookie.setSecure(secure);
-        cookie.setHttpOnly(httpOnly);
-        cookie.setMaxAge(expiration);
-        return cookie;
-    }
-
     private String fetchVideoPageHtml(String videoId, String cookieHeader) throws TranscriptRetrievalException {
         Map<String, String> requestHeaders = createRequestHeaders(cookieHeader);
         return client.get(YOUTUBE_WATCH_URL + videoId, requestHeaders);
@@ -105,11 +119,6 @@ final class DefaultYoutubeTranscriptApi implements YoutubeTranscriptApi {
                 .transcriptList();
     }
 
-    private static boolean containsConsentPage(String videoPageHtml) {
-        String consentPagePattern = "action=\"https://consent.youtube.com/s\"";
-        return videoPageHtml.contains(consentPagePattern);
-    }
-
     private String retryWithConsentCookie(String videoId, String videoPageHtml) throws TranscriptRetrievalException {
         String consentCookie = extractConsentCookie(videoId, videoPageHtml);
         Map<String, String> requestHeaders = createRequestHeaders(consentCookie);
@@ -132,14 +141,5 @@ final class DefaultYoutubeTranscriptApi implements YoutubeTranscriptApi {
         return listTranscripts(videoId)
                 .findTranscript(languageCodes)
                 .fetch();
-    }
-
-    private static String extractConsentCookie(String videoId, String html) throws TranscriptRetrievalException {
-        Pattern consentCookiePattern = Pattern.compile("name=\"v\" value=\"(.*?)\"");
-        Matcher matcher = consentCookiePattern.matcher(html);
-        if (!matcher.find()) {
-            throw new TranscriptRetrievalException(videoId, FAILED_TO_GIVE_COOKIES_CONSENT);
-        }
-        return String.format("CONSENT=YES+%s", matcher.group(1));
     }
 }

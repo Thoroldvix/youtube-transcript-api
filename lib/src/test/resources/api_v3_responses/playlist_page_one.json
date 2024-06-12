@@ -1,0 +1,58 @@
+{
+  "kind": "youtube#playlistItemListResponse",
+  "etag": "nseEjC2LxBDCPe0ex6AlDjFiIak",
+  "nextPageToken": "EAAajgFQVDpDQUVpRURJNE9VWTBRVFEyUkVZd1FUTXdSRElvQVVpN3BfbVAwY3FHQTFBQldrVWlRMmxLVVZSR2NFbFZWVGxwVkRGa1ZWVlZVbEJoYlRGMlRURnJNbEZWVW5STlJrNXFWakJHYzFKV2FHMU1WMXAzUldkM1NYRkxlVTl6ZDFsUkxVbFRkWGgzU1NJ",
+  "items": [
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "DHYqYNlNsbiH6IOb_kgcyfzxxos",
+      "id": "UExaSFFPYk9XVFFET2ptbzNZNkFEbTBTY1dBbEVYZi1mcC41NkI0NEY2RDEwNTU3Q0M2",
+      "snippet": {
+        "publishedAt": "2020-04-12T18:07:57Z",
+        "channelId": "UCYO_jab_esuFRV4b17AJtAw",
+        "title": "Binomial distributions | Probabilities of probabilities, part 1",
+        "description": "Part 2: https://youtu.be/ZA4JkHKZM50\nHelp fund future projects: https://www.patreon.com/3blue1brown\nAn equally valuable form of support is to simply share some of the videos.\nSpecial thanks to these supporters: http://3b1b.co/beta1-thanks\n\nJohn Cook post: https://www.johndcook.com/blog/2011/09/27/bayesian-amazon/\n\n------------------\n\nThese animations are largely made using manim, a scrappy open-source python library:  https://github.com/3b1b/manim\n\nIf you want to check it out, I feel compelled to warn you that it's not the most well-documented tool, and it has many other quirks you might expect in a library someone wrote with only their own use in mind.\n\nMusic by Vincent Rubinetti.\nDownload the music on Bandcamp:\nhttps://vincerubinetti.bandcamp.com/album/the-music-of-3blue1brown\n\nStream the music on Spotify:\nhttps://open.spotify.com/album/1dVyjwS8FBqXhRunaG5W5u\n\nIf you want to contribute translated subtitles or to help review those that have already been made by others and need approval, you can click the gear icon in the video and go to subtitles/cc, then \"add subtitles/cc\".  I really appreciate those who do this, as it helps make the lessons accessible to more people.\n\n------------------\n\n3blue1brown is a channel about animating math, in all senses of the word animate.  And you know the drill with YouTube, if you want to stay posted on new videos, subscribe: http://3b1b.co/subscribe\n\nVarious social media stuffs:\nWebsite: https://www.3blue1brown.com\nTwitter: https://twitter.com/3blue1brown\nReddit: https://www.reddit.com/r/3blue1brown\nInstagram: https://www.instagram.com/3blue1brown_animations/\nPatreon: https://patreon.com/3blue1brown\nFacebook: https://www.facebook.com/3blue1brown",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/8idr1WZ1A7Q/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/8idr1WZ1A7Q/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/8idr1WZ1A7Q/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/8idr1WZ1A7Q/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/8idr1WZ1A7Q/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "3Blue1Brown",
+        "playlistId": "PLZHQObOWTQDOjmo3Y6ADm0ScWAlEXf-fp",
+        "position": 0,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "8idr1WZ1A7Q"
+        },
+        "videoOwnerChannelTitle": "3Blue1Brown",
+        "videoOwnerChannelId": "UCYO_jab_esuFRV4b17AJtAw"
+      }
+    }
+  ],
+  "pageInfo": {
+    "totalResults": 2,
+    "resultsPerPage": 1
+  }
+}

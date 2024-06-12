@@ -21,12 +21,12 @@ import java.util.stream.StreamSupport;
 final class TranscriptListJSON {
 
     private static final String TOO_MANY_REQUESTS = "YouTube is receiving too many requests from this IP and now requires solving a captcha to continue. " +
-            "One of the following things can be done to work around this:\n" +
-            "- Manually solve the captcha in a browser and export the cookie. " +
-            "Read here how to use that cookie with " +
-            "youtube-transcript-api: https://github.com/thoroldvix/youtube-transcript-api#cookies\n" +
-            "- Use a different IP address\n" +
-            "- Wait until the ban on your IP has been lifted";
+                                                    "One of the following things can be done to work around this:\n" +
+                                                    "- Manually solve the captcha in a browser and export the cookie. " +
+                                                    "Read here how to use that cookie with " +
+                                                    "youtube-transcript-api: https://github.com/thoroldvix/youtube-transcript-api#cookies\n" +
+                                                    "- Use a different IP address\n" +
+                                                    "- Wait until the ban on your IP has been lifted";
     private static final String TRANSCRIPTS_DISABLED = "Transcripts are disabled for this video.";
 
     private final JsonNode json;
@@ -37,10 +37,6 @@ final class TranscriptListJSON {
         this.json = json;
         this.client = client;
         this.videoId = videoId;
-    }
-
-    TranscriptList transcriptList() {
-        return new DefaultTranscriptList(videoId, getManualTranscripts(), getGeneratedTranscripts(), getTranslationLanguages());
     }
 
     static TranscriptListJSON from(String videoPageHtml, YoutubeClient client, String videoId) throws TranscriptRetrievalException {
@@ -89,6 +85,10 @@ final class TranscriptListJSON {
         if (!parsedJson.has("captionTracks")) {
             throw new TranscriptRetrievalException(videoId, TRANSCRIPTS_DISABLED);
         }
+    }
+
+    TranscriptList transcriptList() {
+        return new DefaultTranscriptList(videoId, getManualTranscripts(), getGeneratedTranscripts(), getTranslationLanguages());
     }
 
     private Map<String, String> getTranslationLanguages() {

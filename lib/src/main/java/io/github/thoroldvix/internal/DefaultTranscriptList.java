@@ -26,6 +26,21 @@ final class DefaultTranscriptList implements TranscriptList {
         this.translationLanguages = translationLanguages;
     }
 
+    private static String[] getDefault(String[] languageCodes) {
+        return languageCodes.length == 0 ? new String[]{"en"} : languageCodes;
+    }
+
+    private static void validateLanguageCodes(String... languageCodes) {
+        for (String languageCode : languageCodes) {
+            if (languageCode == null) {
+                throw new IllegalArgumentException("Language codes cannot be null");
+            }
+            if (languageCode.isBlank()) {
+                throw new IllegalArgumentException("Language codes cannot be blank");
+            }
+        }
+    }
+
     @Override
     public Transcript findTranscript(String... languageCodes) throws TranscriptRetrievalException {
         try {
@@ -48,10 +63,6 @@ final class DefaultTranscriptList implements TranscriptList {
             }
         }
         throw new TranscriptRetrievalException(videoId, String.format("No transcripts were found for any of the requested language codes: %s. %s.", Arrays.toString(languageCodes), this));
-    }
-
-    private static String[] getDefault(String[] languageCodes) {
-        return languageCodes.length == 0 ? new String[]{"en"} : languageCodes;
     }
 
     @Override
@@ -85,17 +96,6 @@ final class DefaultTranscriptList implements TranscriptList {
         };
     }
 
-    private static void validateLanguageCodes(String... languageCodes) {
-        for (String languageCode : languageCodes) {
-            if (languageCode == null) {
-                throw new IllegalArgumentException("Language codes cannot be null");
-            }
-            if (languageCode.isBlank()) {
-                throw new IllegalArgumentException("Language codes cannot be blank");
-            }
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,12 +112,12 @@ final class DefaultTranscriptList implements TranscriptList {
     @Override
     public String toString() {
         String template = "For video with ID (%s) transcripts are available in the following languages:\n" +
-                "Manually created: " +
-                "%s\n" +
-                "Automatically generated: " +
-                "%s\n" +
-                "Available translation languages: " +
-                "%s";
+                          "Manually created: " +
+                          "%s\n" +
+                          "Automatically generated: " +
+                          "%s\n" +
+                          "Available translation languages: " +
+                          "%s";
 
         return String.format(template,
                 videoId,

@@ -102,10 +102,10 @@ final class DefaultTranscriptContent implements TranscriptContent {
         @Override
         public String toString() {
             return "{" +
-                    "text='" + text + '\'' +
-                    ", start=" + start +
-                    ", dur=" + dur +
-                    '}';
+                   "text='" + text + '\'' +
+                   ", start=" + start +
+                   ", dur=" + dur +
+                   '}';
         }
     }
 }
