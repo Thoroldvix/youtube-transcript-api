@@ -115,7 +115,11 @@ final class TranscriptListJSON {
         return StreamSupport.stream(json.get("captionTracks").spliterator(), false)
                 .filter(filter)
                 .map(jsonNode -> getTranscript(client, jsonNode, translationLanguages))
-                .collect(Collectors.toMap(Transcript::getLanguageCode, transcript -> transcript));
+                .collect(Collectors.toMap(
+                        Transcript::getLanguageCode,
+                        transcript -> transcript,
+                        (existing, replacement) -> existing)
+                );
     }
 
     private Transcript getTranscript(YoutubeClient client, JsonNode jsonNode, Map<String, String> translationLanguages) {
