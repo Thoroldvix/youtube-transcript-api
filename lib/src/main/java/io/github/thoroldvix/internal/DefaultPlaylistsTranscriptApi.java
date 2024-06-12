@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 
 import static io.github.thoroldvix.api.YtApiV3Endpoint.*;
 
@@ -19,24 +20,43 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
     private final YoutubeClient client;
     private final YoutubeTranscriptApi youtubeTranscriptApi;
     private final ObjectMapper objectMapper;
+    private final ExecutorService executor;
 
     DefaultPlaylistsTranscriptApi(YoutubeClient client, YoutubeTranscriptApi youtubeTranscriptApi) {
         this.client = client;
         this.objectMapper = new ObjectMapper();
         this.youtubeTranscriptApi = youtubeTranscriptApi;
+        this.executor = Executors.newCachedThreadPool();
     }
 
     @Override
     public Map<String, TranscriptList> listTranscriptsForPlaylist(String playlistId, String apiKey, String cookiesPath, boolean continueOnError) throws TranscriptRetrievalException {
-        Map<String, TranscriptList> transcriptLists = new HashMap<>();
+        Map<String, TranscriptList> transcriptLists = new ConcurrentHashMap<>();
         List<String> videoIds = getVideoIds(playlistId, apiKey);
+        List<Future<Void>> futures = new ArrayList<>();
 
         for (String videoId : videoIds) {
+            futures.add(executor.submit(() -> {
+                try {
+                    TranscriptList transcriptList = getTranscriptList(videoId, cookiesPath);
+                    transcriptLists.put(videoId, transcriptList);
+                } catch (TranscriptRetrievalException e) {
+                    if (!continueOnError) throw e;
+                }
+                return null;
+            }));
+        }
+
+        executor.shutdown();
+
+        for (Future<Void> future : futures) {
             try {
-                TranscriptList transcriptList = getTranscriptList(videoId, cookiesPath);
-                transcriptLists.put(videoId, transcriptList);
-            } catch (TranscriptRetrievalException e) {
-                if (!continueOnError) throw e;
+                future.get();
+            } catch (InterruptedException | ExecutionException e) {
+                if (!continueOnError) {
+                    executor.shutdownNow();
+                    throw new TranscriptRetrievalException("Error retrieving transcripts", e);
+                }
             }
         }
 
@@ -116,25 +136,33 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
                 "maxResults", "50"
         );
 
+        List<Future<String>> futures = new ArrayList<>();
         List<String> videoIds = new ArrayList<>();
 
         while (true) {
-            String playlistJson = client.get(PLAYLIST_ITEMS, params);
 
-            JsonNode jsonNode = parseJson(playlistJson,
-                    "Could not parse playlist JSON for the playlist: " + playlistId);
+            futures.add(executor.submit(() -> client.get(PLAYLIST_ITEMS, params)));
 
-            extractVideoId(jsonNode, videoIds);
+            for (Future<String> future : futures) {
+                try {
+                    String playlistJson = future.get();
+                    JsonNode jsonNode = parseJson(playlistJson,
+                            "Could not parse playlist JSON for the playlist: " + playlistId);
 
-            JsonNode nextPageToken = jsonNode.get("nextPageToken");
-            if (nextPageToken == null) {
-                break;
+                    extractVideoId(jsonNode, videoIds);
+
+                    JsonNode nextPageToken = jsonNode.get("nextPageToken");
+                    if (nextPageToken == null) {
+                        return videoIds;
+                    }
+                    params.put("pageToken", nextPageToken.asText());
+
+                } catch (InterruptedException | ExecutionException e) {
+                        executor.shutdownNow();
+                        throw new TranscriptRetrievalException("Error retrieving transcripts for playlist: " + playlistId, e);
+                    }
+                }
             }
-
-            params.put("pageToken", nextPageToken.asText());
-        }
-
-        return videoIds;
     }
 
     private void extractVideoId(JsonNode jsonNode, List<String> videoIds) {
