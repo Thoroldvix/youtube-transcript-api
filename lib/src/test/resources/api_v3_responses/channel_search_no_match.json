@@ -1,0 +1,124 @@
+{
+  "kind": "youtube#searchListResponse",
+  "etag": "Si8hxIyH7Dn2SgY0dQ12mnVDFGE",
+  "nextPageToken": "CAUQAA",
+  "regionCode": "UA",
+  "pageInfo": {
+    "totalResults": 208,
+    "resultsPerPage": 5
+  },
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "KwpU6cbvPGOz30J490cU4B2S1cs",
+      "id": {
+        "kind": "youtube#channel",
+        "channelId": "UCBevyiJ2ierZY-0yZhfLrmQ"
+      },
+      "snippet": {
+        "publishedAt": "2020-09-23T22:37:55Z",
+        "channelId": "UCBevyiJ2ierZY-0yZhfLrmQ",
+        "title": "3Blue1BrownJapan",
+        "description": "3Blue1Brownの日本語版公式チャンネルです。東京大学の学生有志団体が本家3Blue1Brownの公式ライセンスのもと、動画を日本 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/kkBN740CKMSMPdjWOrKn8sbZQvEEHiHmO5jT5dt0AVF3iePocVolv8IwfHml85v1kOlRDwg2DQ=s88-c-k-c0xffffffff-no-rj-mo"
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/kkBN740CKMSMPdjWOrKn8sbZQvEEHiHmO5jT5dt0AVF3iePocVolv8IwfHml85v1kOlRDwg2DQ=s240-c-k-c0xffffffff-no-rj-mo"
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/kkBN740CKMSMPdjWOrKn8sbZQvEEHiHmO5jT5dt0AVF3iePocVolv8IwfHml85v1kOlRDwg2DQ=s800-c-k-c0xffffffff-no-rj-mo"
+          }
+        },
+        "channelTitle": "3Blue1BrownJapan",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-09-23T22:37:55Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "X41COJVPJ0YgI0XQ1E1LxwUtAzM",
+      "id": {
+        "kind": "youtube#channel",
+        "channelId": "UC6hAYNOWMmuqOBvFOuAFKwA"
+      },
+      "snippet": {
+        "publishedAt": "2018-03-26T18:54:06Z",
+        "channelId": "UC6hAYNOWMmuqOBvFOuAFKwA",
+        "title": "3Blue1Brown Русский",
+        "description": "3Blue1Brown, созданный Грантом Сандэрсоном (Grant Sanderson), Это комбинация Математики и развлечения - в ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/ytc/AIdro_km1q4dyRhqPHfRXTuQg_B5iLVCeXhJtHyO4FVxXPB4xIU=s88-c-k-c0xffffffff-no-rj-mo"
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/ytc/AIdro_km1q4dyRhqPHfRXTuQg_B5iLVCeXhJtHyO4FVxXPB4xIU=s240-c-k-c0xffffffff-no-rj-mo"
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/ytc/AIdro_km1q4dyRhqPHfRXTuQg_B5iLVCeXhJtHyO4FVxXPB4xIU=s800-c-k-c0xffffffff-no-rj-mo"
+          }
+        },
+        "channelTitle": "3Blue1Brown Русский",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-03-26T18:54:06Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4sE5zUzu6QtK5xmmU4ZdFa3m9kQ",
+      "id": {
+        "kind": "youtube#channel",
+        "channelId": "UCCbgOIWdmYncvYMbl3LjvBQ"
+      },
+      "snippet": {
+        "publishedAt": "2019-01-22T22:33:40Z",
+        "channelId": "UCCbgOIWdmYncvYMbl3LjvBQ",
+        "title": "3Blue1Brown translated by Sciberia",
+        "description": "Наши переводы MIT и Stanford: youtube.com/c/sciberia_science.",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/ytc/AIdro_kupS03sbv7wxGaGwMbIUOIo0pDuSG1NlvcC-MmIOE4gA=s88-c-k-c0xffffffff-no-rj-mo"
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/ytc/AIdro_kupS03sbv7wxGaGwMbIUOIo0pDuSG1NlvcC-MmIOE4gA=s240-c-k-c0xffffffff-no-rj-mo"
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/ytc/AIdro_kupS03sbv7wxGaGwMbIUOIo0pDuSG1NlvcC-MmIOE4gA=s800-c-k-c0xffffffff-no-rj-mo"
+          }
+        },
+        "channelTitle": "3Blue1Brown translated by Sciberia",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-01-22T22:33:40Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rEjOIyCKfTE_GRT-nahPaewhvWs",
+      "id": {
+        "kind": "youtube#channel",
+        "channelId": "UC4kAnPtYF9ulAaC7Dap9BDA"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-29T13:22:15Z",
+        "channelId": "UC4kAnPtYF9ulAaC7Dap9BDA",
+        "title": "3Blue1Brown UA",
+        "description": "3Blue1Brown — канал, створений Грантом Сандероном і є певною комбінацією математики та розважального контенту, ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/DdRS6NY1DtMRo3WagAfz_AEflwCHJlyc1b2WMc-SaVUoQ20pBr115-lauL26BQeDWQnVH8SWow=s88-c-k-c0xffffffff-no-rj-mo"
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/DdRS6NY1DtMRo3WagAfz_AEflwCHJlyc1b2WMc-SaVUoQ20pBr115-lauL26BQeDWQnVH8SWow=s240-c-k-c0xffffffff-no-rj-mo"
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/DdRS6NY1DtMRo3WagAfz_AEflwCHJlyc1b2WMc-SaVUoQ20pBr115-lauL26BQeDWQnVH8SWow=s800-c-k-c0xffffffff-no-rj-mo"
+          }
+        },
+        "channelTitle": "3Blue1Brown UA",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-29T13:22:15Z"
+      }
+    }
+  ]
+}

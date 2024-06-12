@@ -115,10 +115,10 @@ final class DefaultTranscript implements Transcript {
         if (o == null || getClass() != o.getClass()) return false;
         DefaultTranscript that = (DefaultTranscript) o;
         return isGenerated == that.isGenerated && isTranslatable == that.isTranslatable &&
-                Objects.equals(client, that.client) && Objects.equals(videoId, that.videoId) &&
-                Objects.equals(apiUrl, that.apiUrl) && Objects.equals(language, that.language) &&
-                Objects.equals(languageCode, that.languageCode) &&
-                Objects.equals(translationLanguages, that.translationLanguages);
+               Objects.equals(client, that.client) && Objects.equals(videoId, that.videoId) &&
+               Objects.equals(apiUrl, that.apiUrl) && Objects.equals(language, that.language) &&
+               Objects.equals(languageCode, that.languageCode) &&
+               Objects.equals(translationLanguages, that.translationLanguages);
     }
 
     @Override
@@ -129,10 +129,10 @@ final class DefaultTranscript implements Transcript {
     @Override
     public String toString() {
         String template = "Transcript for video with id: %s.\n" +
-                "Language: %s\n" +
-                "Language code: %s\n" +
-                "API URL for retrieving content: %s\n" +
-                "Available translation languages: %s";
+                          "Language: %s\n" +
+                          "Language code: %s\n" +
+                          "API URL for retrieving content: %s\n" +
+                          "Available translation languages: %s";
 
         return String.format(template,
                 videoId,

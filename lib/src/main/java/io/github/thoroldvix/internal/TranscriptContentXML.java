@@ -27,28 +27,12 @@ final class TranscriptContentXML {
         this.videoId = videoId;
     }
 
-    TranscriptContent transcriptContent() throws TranscriptRetrievalException {
-        List<Fragment> fragments = parseFragments();
-        List<Fragment> content = formatFragments(fragments);
-
-        return new DefaultTranscriptContent(content);
-    }
-
     private static List<Fragment> formatFragments(List<Fragment> fragments) {
         return fragments.stream()
                 .filter(TranscriptContentXML::isValidTranscriptFragment)
                 .map(TranscriptContentXML::removeHtmlTags)
                 .map(TranscriptContentXML::unescapeXmlTags)
                 .collect(Collectors.toList());
-    }
-
-    private List<Fragment> parseFragments() throws TranscriptRetrievalException {
-        try {
-            return xmlMapper.readValue(xml, new TypeReference<>() {
-            });
-        } catch (JsonProcessingException e) {
-            throw new TranscriptRetrievalException(videoId, "Failed to parse transcript content XML.", e);
-        }
     }
 
     private static Fragment unescapeXmlTags(Fragment fragment) {
@@ -64,5 +48,21 @@ final class TranscriptContentXML {
 
     private static boolean isValidTranscriptFragment(Fragment fragment) {
         return fragment.getText() != null && !fragment.getText().isBlank();
+    }
+
+    TranscriptContent transcriptContent() throws TranscriptRetrievalException {
+        List<Fragment> fragments = parseFragments();
+        List<Fragment> content = formatFragments(fragments);
+
+        return new DefaultTranscriptContent(content);
+    }
+
+    private List<Fragment> parseFragments() throws TranscriptRetrievalException {
+        try {
+            return xmlMapper.readValue(xml, new TypeReference<>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new TranscriptRetrievalException(videoId, "Failed to parse transcript content XML.", e);
+        }
     }
 }

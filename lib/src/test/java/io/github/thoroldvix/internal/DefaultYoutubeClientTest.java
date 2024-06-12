@@ -19,6 +19,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
 
+import static io.github.thoroldvix.api.YtApiV3Endpoint.PLAYLIST_ITEMS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,7 +31,7 @@ class DefaultYoutubeClientTest {
 
     private static final String VIDEO_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     private static final Map<String, String> HEADERS = Map.of("Accept-Language", "en-US");
-
+    private static final Map<String, String> PARAMS = Map.of("key", "test", "part", "snippet");
     @Mock
     private HttpResponse<String> response;
     @Mock
@@ -89,6 +90,50 @@ class DefaultYoutubeClientTest {
         when(httpClient.send(any(), any())).thenThrow(new InterruptedException());
 
         assertThatThrownBy(() -> youtubeClient.get(VIDEO_URL, HEADERS))
+                .isInstanceOf(TranscriptRetrievalException.class);
+    }
+
+    @Test
+    void getToApiEndpoint() throws Exception {
+        String expected = "expected response";
+
+        when(httpClient.send(requestCaptor.capture(), any(HttpResponse.BodyHandlers.ofString().getClass()))).thenReturn(response);
+        when(response.statusCode()).thenReturn(200);
+        when(response.body()).thenReturn(expected);
+
+        String actual = youtubeClient.get(PLAYLIST_ITEMS, PARAMS);
+
+        HttpRequest request = requestCaptor.getValue();
+
+        assertThat(actual).isEqualTo(expected);
+        assertThat(request.uri().toString()).contains(PLAYLIST_ITEMS.url() + "?");
+        assertThat(request.uri().toString()).contains("key=test");
+        assertThat(request.uri().toString()).contains("part=snippet");
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {500, 404})
+    void getToApiEndpointThrowsExceptionIfResponseIsNotOk(int statusCode) throws Exception {
+        when(httpClient.send(any(HttpRequest.class), any(HttpResponse.BodyHandlers.ofString().getClass()))).thenReturn(response);
+        when(response.statusCode()).thenReturn(statusCode);
+
+        assertThatThrownBy(() -> youtubeClient.get(PLAYLIST_ITEMS, PARAMS))
+                .isInstanceOf(TranscriptRetrievalException.class);
+    }
+
+    @Test
+    void getToApiEndpointThrowsExceptionWhenIOExceptionOccurs() throws Exception {
+        when(httpClient.send(any(), any())).thenThrow(new IOException());
+
+        assertThatThrownBy(() -> youtubeClient.get(PLAYLIST_ITEMS, PARAMS))
+                .isInstanceOf(TranscriptRetrievalException.class);
+    }
+
+    @Test
+    void getToApiEndpointThrowsExceptionWhenInterruptedExceptionOccurs() throws Exception {
+        when(httpClient.send(any(), any())).thenThrow(new InterruptedException());
+
+        assertThatThrownBy(() -> youtubeClient.get(PLAYLIST_ITEMS, PARAMS))
                 .isInstanceOf(TranscriptRetrievalException.class);
     }
 }

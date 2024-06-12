@@ -12,7 +12,8 @@
 ## 📖 Introduction
 
 Java library which allows you to retrieve subtitles/transcripts for a YouTube video.
-It supports manual and automatically generated subtitles and does not use headless browser for scraping.
+It supports manual and automatically generated subtitles, bulk transcript retrieval for all videos in the playlist or
+on the channel and does not use headless browser for scraping.
 Inspired by [Python library](https://github.com/jdepoix/youtube-transcript-api).
 
 ## 🤖 Features
@@ -20,6 +21,8 @@ Inspired by [Python library](https://github.com/jdepoix/youtube-transcript-api).
 ✅ Manual transcripts retrieval
 
 ✅ Automatically generated transcripts retrieval
+
+✅ Bulk transcript retrieval for all videos in the playlist or channel
 
 ✅ Transcript translation
 
@@ -79,7 +82,7 @@ TranscriptList transcriptList = youtubeTranscriptApi.listTranscripts("videoId");
 
 // Iterate over transcript list
 for(Transcript transcript : transcriptList) {
-    System.out.println(transcript);
+        System.out.println(transcript);
 }
 
 // Find transcript in specific language
@@ -142,6 +145,8 @@ TranscriptContent transcriptContent = youtubeTranscriptApi.listTranscripts("vide
 // Or
 TranscriptContent transcriptContent = youtubeTranscriptApi.getTranscript("videoId");
 ```
+
+For bulk transcript retrieval see [Bulk Transcript Retrieval](#bulk-transcript-retrieval).
 
 ## 🔧 Detailed Usage
 
@@ -241,7 +246,7 @@ TranscriptFormatter jsonFormatter = TranscriptFormatters.jsonFormatter();
 String formattedContent = jsonFormatter.format(transcriptContent);
 ````
 
-### YoutubeClient customization
+### YoutubeClient Customization
 
 By default, `YoutubeTranscriptApi` uses Java 11 HttpClient for making requests to YouTube, if you want to use a
 different client,
@@ -273,6 +278,52 @@ TranscriptList transcriptList = youtubeTranscriptApi.listTranscriptsWithCookies(
 
 // Get transcript content
 TranscriptContent transcriptContent = youtubeTranscriptApi.getTranscriptWithCookies("videoId", "path/to/cookies.txt", "en");
+```
+
+### Bulk Transcript Retrieval
+
+All bulk transcript retrieval operations are done via the `PlaylistsTranscriptApi` interface. Same as with the
+`YoutubeTranscriptApi`,
+you can create a new instance of the PlaylistsTranscriptApi by calling the `createDefaultPlaylistsApi` method of the
+`TranscriptApiFactory`.
+Playlists and channels information is retrieved from
+the [YouTube V3 API](https://developers.google.com/youtube/v3/docs/),
+so you will need to provide API key for all methods.
+
+```java
+// Create a new default PlaylistsTranscriptApi instance
+PlaylistsTranscriptApi playlistsTranscriptApi = TranscriptApiFactory.createDefaultPlaylistsApi();
+
+// Retrieve all available transcripts for a given playlist
+Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForPlaylist("playlistId", "apiKey", true);
+
+// Retrieve all available transcripts for a given channel
+Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForChannel("channelName", "apiKey", true);
+```
+
+As you can see, there is also a boolean flag `continueOnError`, which tells whether to continue if transcript retrieval
+fails for a video or not. For example, if it's set to `true`, all transcripts that could not be retrieved will be
+skipped, if
+it's set to `false`, operation will fail fast on the first error.
+
+All methods are also have overloaded versions which accept path to [cookies.txt](#cookies) file.
+
+```java
+// Retrieve all available transcripts for a given playlist
+Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForPlaylist(
+        "playlistId",
+        "apiKey",
+        true,
+        "path/to/cookies.txt"
+);
+
+// Retrieve all available transcripts for a given channel
+Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForChannel(
+        "channelName",
+        "apiKey",
+        true,
+        "path/to/cookies.txt"
+);
 ```
 
 ## 🤓 How it works

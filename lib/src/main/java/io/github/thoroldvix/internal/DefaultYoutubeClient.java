@@ -2,6 +2,7 @@ package io.github.thoroldvix.internal;
 
 import io.github.thoroldvix.api.TranscriptRetrievalException;
 import io.github.thoroldvix.api.YoutubeClient;
+import io.github.thoroldvix.api.YtApiV3Endpoint;
 
 import java.io.IOException;
 import java.net.URI;
@@ -14,8 +15,6 @@ import java.util.Map;
  * Default implementation of {@link YoutubeClient}.
  */
 final class DefaultYoutubeClient implements YoutubeClient {
-
-    private static final String YOUTUBE_REQUEST_FAILED = "Request to YouTube failed.";
 
     private final HttpClient httpClient;
 
@@ -30,31 +29,68 @@ final class DefaultYoutubeClient implements YoutubeClient {
     @Override
     public String get(String url, Map<String, String> headers) throws TranscriptRetrievalException {
         String videoId = url.split("=")[1];
+        String errorMessage = "Request to YouTube failed.";
         String[] headersArray = createHeaders(headers);
-        HttpRequest request = createRequest(url, headersArray);
-        HttpResponse<String> response = send(videoId, request);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .headers(headersArray)
+                .build();
+
+        HttpResponse<String> response;
+        try {
+            response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            throw new TranscriptRetrievalException(videoId, errorMessage, e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new TranscriptRetrievalException(videoId, errorMessage, e);
+        }
+
         if (response.statusCode() != 200) {
-            throw new TranscriptRetrievalException(videoId, YOUTUBE_REQUEST_FAILED + " Status code: " + response.statusCode());
+            throw new TranscriptRetrievalException(videoId, errorMessage + " Status code: " + response.statusCode());
         }
         return response.body();
     }
 
-    private HttpResponse<String> send(String videoId, HttpRequest request) throws TranscriptRetrievalException {
+    @Override
+    public String get(YtApiV3Endpoint endpoint, Map<String, String> params) throws TranscriptRetrievalException {
+        String paramsString = createParamsString(params);
+        String errorMessage = String.format("Request to YouTube '%s' endpoint failed.", endpoint);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(endpoint.url() + "?" + paramsString))
+                .build();
+
+        HttpResponse<String> response;
         try {
-            return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException e) {
-            throw new TranscriptRetrievalException(videoId, YOUTUBE_REQUEST_FAILED, e);
+            throw new TranscriptRetrievalException(String.format(errorMessage, endpoint), e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new TranscriptRetrievalException(videoId, YOUTUBE_REQUEST_FAILED, e);
+            throw new TranscriptRetrievalException(errorMessage, e);
         }
+
+        if (response.statusCode() != 200) {
+            throw new TranscriptRetrievalException(errorMessage + " Status code: " + response.statusCode());
+        }
+
+        return response.body();
     }
 
-    private static HttpRequest createRequest(String url, String[] headersArray) {
-        return HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .headers(headersArray)
-                .build();
+    private String createParamsString(Map<String, String> params) {
+        StringBuilder paramString = new StringBuilder();
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            String value = formatValue(entry.getValue());
+            paramString.append(entry.getKey()).append("=").append(value).append("&");
+        }
+
+        paramString.deleteCharAt(paramString.length() - 1);
+        return paramString.toString();
+    }
+
+    private String formatValue(String value) {
+        return value.replaceAll(" ", "%20");
     }
 
     private String[] createHeaders(Map<String, String> headers) {

@@ -1,0 +1,58 @@
+{
+  "kind": "youtube#playlistItemListResponse",
+  "etag": "Sb9EayDoodATYTMAN6O2wIJ4IgE",
+  "prevPageToken": "EAEajgFQVDpDQUVpRURJNE9VWTBRVFEyUkVZd1FUTXdSRElvQVVpN3BfbVAwY3FHQTFBQVdrVWlRMmxLVVZSR2NFbFZWVGxwVkRGa1ZWVlZVbEJoYlRGMlRURnJNbEZWVW5STlJrNXFWakJHYzFKV2FHMU1WMXAzUldkM1NYRkxlVTl6ZDFsUkxVbFRkWGgzU1NJ",
+  "items": [
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "vo2tv_GL8bfm3DnjKJCmtyC-2pA",
+      "id": "UExaSFFPYk9XVFFET2ptbzNZNkFEbTBTY1dBbEVYZi1mcC4yODlGNEE0NkRGMEEzMEQy",
+      "snippet": {
+        "publishedAt": "2020-04-12T18:07:57Z",
+        "channelId": "UCYO_jab_esuFRV4b17AJtAw",
+        "title": "Why “probability of 0” does not mean “impossible” | Probabilities of probabilities, part 2",
+        "description": "An introduction to probability density functions\nHelp fund future projects: https://www.patreon.com/3blue1brown\nAn equally valuable form of support is to simply share some of the videos.\nSpecial thanks to these supporters: http://3b1b.co/thanks\r\n\r\nCurious about measure theory?  This does require some background in real analysis, but if you want to dig in, here is a textbook by the always-great Terence Tao.\nhttps://terrytao.files.wordpress.com/2012/12/gsm-126-tao5-measure-book.pdf\n\nAlso, for the real analysis buffs among you, there was one statement I made in this video that is a rather nice puzzle.  Namely, if the probabilities for each value in a given range (of the real number line) are all non-zero, no matter how small, their sum will be infinite.  This isn't immediately obvious, given that you can have convergent sums of countable infinitely many values, but if you're up for it see if you can prove that the sum of any uncountable infinite collection of positive values must blow up to infinity.\n\nThanks to these viewers for their contributions to translations\nHebrew: Omer Tuchfeld\n\n------------------\r\n\r\nThese animations are largely made using manim, a scrappy open source python library:  https://github.com/3b1b/manim\r\n\r\nIf you want to check it out, I feel compelled to warn you that it's not the most well-documented tool, and it has many other quirks you might expect in a library someone wrote with only their own use in mind.\r\n\r\nMusic by Vincent Rubinetti.\r\nDownload the music on Bandcamp:\r\nhttps://vincerubinetti.bandcamp.com/album/the-music-of-3blue1brown\r\n\r\nStream the music on Spotify:\r\nhttps://open.spotify.com/album/1dVyjwS8FBqXhRunaG5W5u\r\n\r\nIf you want to contribute translated subtitles or to help review those that have already been made by others and need approval, you can click the gear icon in the video and go to subtitles/cc, then \"add subtitles/cc\".  I really appreciate those who do this, as it helps make the lessons accessible to more people.\r\n\r\n------------------\r\n\r\n3blue1brown is a channel about animating math, in all senses of the word animate.  And you know the drill with YouTube, if you want to stay posted on new videos, subscribe: http://3b1b.co/subscribe\r\n\r\nVarious social media stuffs:\r\nWebsite: https://www.3blue1brown.com\r\nTwitter: https://twitter.com/3blue1brown\r\nReddit: https://www.reddit.com/r/3blue1brown\r\nInstagram: https://www.instagram.com/3blue1brown_animations/\r\nPatreon: https://patreon.com/3blue1brown\r\nFacebook: https://www.facebook.com/3blue1brown",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZA4JkHKZM50/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZA4JkHKZM50/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZA4JkHKZM50/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/ZA4JkHKZM50/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/ZA4JkHKZM50/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "3Blue1Brown",
+        "playlistId": "PLZHQObOWTQDOjmo3Y6ADm0ScWAlEXf-fp",
+        "position": 1,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "ZA4JkHKZM50"
+        },
+        "videoOwnerChannelTitle": "3Blue1Brown",
+        "videoOwnerChannelId": "UCYO_jab_esuFRV4b17AJtAw"
+      }
+    }
+  ],
+  "pageInfo": {
+    "totalResults": 2,
+    "resultsPerPage": 1
+  }
+}
