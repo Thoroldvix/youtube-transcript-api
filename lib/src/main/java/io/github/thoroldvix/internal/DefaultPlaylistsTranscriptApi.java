@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static io.github.thoroldvix.api.YtApiV3Endpoint.*;
 
@@ -30,14 +34,41 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
     public Map<String, TranscriptList> listTranscriptsForPlaylist(String playlistId, String apiKey, String cookiesPath, boolean continueOnError) throws TranscriptRetrievalException {
         Map<String, TranscriptList> transcriptLists = new HashMap<>();
         List<String> videoIds = getVideoIds(playlistId, apiKey);
+        ExecutorService executor = Executors.newCachedThreadPool();
+
+        List<Future<TranscriptList>> futures = new ArrayList<>();
 
         for (String videoId : videoIds) {
-            try {
-                TranscriptList transcriptList = getTranscriptList(videoId, cookiesPath);
-                transcriptLists.put(videoId, transcriptList);
-            } catch (TranscriptRetrievalException e) {
-                if (!continueOnError) throw e;
+            futures.add(executor.submit(() -> {
+                try {
+                    return getTranscriptList(videoId, cookiesPath);
+                } catch (TranscriptRetrievalException e) {
+                    if (!continueOnError) throw e;
+                    return null;
+                }
+            }));
+        }
+
+        try {
+            for (Future<TranscriptList> future : futures) {
+                try {
+                    TranscriptList transcriptList = future.get();
+                    if (transcriptList != null) {
+                        transcriptLists.put(transcriptList.getVideoId(), transcriptList);
+                    }
+                } catch (ExecutionException e) {
+                    if (!continueOnError) {
+                        executor.shutdownNow();
+                        throw new TranscriptRetrievalException("Failed to retrieve transcripts for playlist: " + playlistId, e);
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    executor.shutdownNow();
+                    throw new TranscriptRetrievalException("Failed to retrieve transcripts for playlist: " + playlistId, e);
+                }
             }
+        } finally {
+            executor.shutdownNow();
         }
 
         return transcriptLists;
@@ -120,13 +151,11 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
 
         while (true) {
             String playlistJson = client.get(PLAYLIST_ITEMS, params);
-
             JsonNode jsonNode = parseJson(playlistJson,
                     "Could not parse playlist JSON for the playlist: " + playlistId);
-
             extractVideoId(jsonNode, videoIds);
-
             JsonNode nextPageToken = jsonNode.get("nextPageToken");
+
             if (nextPageToken == null) {
                 break;
             }
