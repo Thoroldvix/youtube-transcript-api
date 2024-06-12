@@ -11,8 +11,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
 
-import static io.github.thoroldvix.api.YtApiV3Endpoint.PLAYLIST_ITEMS;
-
 /**
  * Default implementation of {@link YoutubeClient}.
  */
@@ -57,7 +55,7 @@ final class DefaultYoutubeClient implements YoutubeClient {
     @Override
     public String get(YtApiV3Endpoint endpoint, Map<String, String> params) throws TranscriptRetrievalException {
         String paramsString = createParamsString(params);
-        String errorMessage = createErrorMessage(endpoint);
+        String errorMessage = String.format("Request to YouTube '%s' endpoint failed.", endpoint);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(endpoint.url() + "?" + paramsString))
                 .build();
@@ -66,7 +64,7 @@ final class DefaultYoutubeClient implements YoutubeClient {
         try {
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException e) {
-            throw new TranscriptRetrievalException(errorMessage, e);
+            throw new TranscriptRetrievalException(String.format(errorMessage, endpoint), e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new TranscriptRetrievalException(errorMessage, e);
@@ -79,22 +77,20 @@ final class DefaultYoutubeClient implements YoutubeClient {
         return response.body();
     }
 
-    private String createErrorMessage(YtApiV3Endpoint endpoint) {
-        if (endpoint == PLAYLIST_ITEMS) {
-            return "Request to youtube playlistItems endpoint failed.";
-        }
-        return "Request to YouTube failed.";
-    }
-
     private String createParamsString(Map<String, String> params) {
         StringBuilder paramString = new StringBuilder();
 
         for (Map.Entry<String, String> entry : params.entrySet()) {
-            paramString.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
+            String value = formatValue(entry.getValue());
+            paramString.append(entry.getKey()).append("=").append(value).append("&");
         }
 
         paramString.deleteCharAt(paramString.length() - 1);
         return paramString.toString();
+    }
+
+    private String formatValue(String value) {
+        return value.replaceAll(" ", "%20");
     }
 
     private String[] createHeaders(Map<String, String> headers) {
