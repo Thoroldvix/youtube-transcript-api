@@ -90,6 +90,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieves transcripts for all videos in a playlist, or all videos for a specific channel.
  <p>
  Playlists and channel videos are retrieved from the YouTube API, so you will need to have a valid api key to use this.
+ <p>
+ All methods take a <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api"><code>TranscriptRequest</code></a> object as a parameter, which contains API key, cookies file path (optional), and stop on error flag (optional, defaults to true).
+ If cookies are not provided, the API will not be able to access age restricted videos, see <a href="https://github.com/Thoroldvix/youtube-transcript-api#cookies">Cookies</a>.
+ <p>
+ <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api"><code>TranscriptRequest</code></a> also contains a flag to stop on error, or continue on error.
  </p>
  <p>
  To get implementation for this interface see <a href="../internal/TranscriptApiFactory.html" title="class in io.github.thoroldvix.internal"><code>TranscriptApiFactory</code></a>
@@ -108,35 +113,31 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptList.html" title="interface in io.github.thoroldvix.api">TranscriptList</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listTranscriptsForChannel(java.lang.String,java.lang.String,boolean)" class="member-name-link">listTranscriptsForChannel</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;channelName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiKey,
- boolean&nbsp;continueOnError)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptContent.html" title="interface in io.github.thoroldvix.api">TranscriptContent</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTranscriptsForChannel(java.lang.String,io.github.thoroldvix.api.TranscriptRequest,java.lang.String...)" class="member-name-link">getTranscriptsForChannel</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;channelName,
+ <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api">TranscriptRequest</a>&nbsp;request,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;languageCodes)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Retrieves transcript lists for all videos for the specified channel using provided API key.</div>
+<div class="block">Retrieves transcript content for all videos for the specified channel.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptContent.html" title="interface in io.github.thoroldvix.api">TranscriptContent</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTranscriptsForPlaylist(java.lang.String,io.github.thoroldvix.api.TranscriptRequest,java.lang.String...)" class="member-name-link">getTranscriptsForPlaylist</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;playlistId,
+ <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api">TranscriptRequest</a>&nbsp;request,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;languageCodes)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Retrieves transcript content for all videos in the specified playlist.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptList.html" title="interface in io.github.thoroldvix.api">TranscriptList</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listTranscriptsForChannel(java.lang.String,io.github.thoroldvix.api.TranscriptRequest)" class="member-name-link">listTranscriptsForChannel</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;channelName,
+ <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api">TranscriptRequest</a>&nbsp;request)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Retrieves transcript lists for all videos for the specified channel.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptList.html" title="interface in io.github.thoroldvix.api">TranscriptList</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listTranscriptsForChannel(java.lang.String,java.lang.String,java.lang.String,boolean)" class="member-name-link">listTranscriptsForChannel</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;channelName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiKey,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cookiesPath,
- boolean&nbsp;continueOnError)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listTranscriptsForPlaylist(java.lang.String,io.github.thoroldvix.api.TranscriptRequest)" class="member-name-link">listTranscriptsForPlaylist</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;playlistId,
+ <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api">TranscriptRequest</a>&nbsp;request)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Retrieves transcript lists for all videos for the specified channel using provided API key and cookies file from a specified path.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptList.html" title="interface in io.github.thoroldvix.api">TranscriptList</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listTranscriptsForPlaylist(java.lang.String,java.lang.String,boolean)" class="member-name-link">listTranscriptsForPlaylist</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;playlistId,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiKey,
- boolean&nbsp;continueOnError)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Retrieves transcript lists for all videos in the specified playlist using provided API key.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptList.html" title="interface in io.github.thoroldvix.api">TranscriptList</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listTranscriptsForPlaylist(java.lang.String,java.lang.String,java.lang.String,boolean)" class="member-name-link">listTranscriptsForPlaylist</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;playlistId,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiKey,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cookiesPath,
- boolean&nbsp;continueOnError)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Retrieves transcript lists for all videos in the specified playlist using provided API key and cookies file from a specified path.</div>
+<div class="block">Retrieves transcript lists for all videos in the specified playlist.</div>
 </div>
 </div>
 </div>
@@ -153,21 +154,16 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="listTranscriptsForPlaylist(java.lang.String,java.lang.String,java.lang.String,boolean)">
+<section class="detail" id="listTranscriptsForPlaylist(java.lang.String,io.github.thoroldvix.api.TranscriptRequest)">
 <h3>listTranscriptsForPlaylist</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptList.html" title="interface in io.github.thoroldvix.api">TranscriptList</a>&gt;</span>&nbsp;<span class="element-name">listTranscriptsForPlaylist</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;playlistId,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiKey,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cookiesPath,
- boolean&nbsp;continueOnError)</span>
+ <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api">TranscriptRequest</a>&nbsp;request)</span>
                                                throws <span class="exceptions"><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></span></div>
-<div class="block">Retrieves transcript lists for all videos in the specified playlist using provided API key and cookies file from a specified path.</div>
+<div class="block">Retrieves transcript lists for all videos in the specified playlist.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>playlistId</code> - The ID of the playlist</dd>
-<dd><code>apiKey</code> - API key for the YouTube V3 API (see <a href="https://developers.google.com/youtube/v3/getting-started">Getting started</a>)</dd>
-<dd><code>cookiesPath</code> - The file path to the text file containing the authentication cookies. Used in the case if some videos are age restricted see {<a href="https://github.com/Thoroldvix/youtube-transcript-api#cookies">Cookies</a>}</dd>
-<dd><code>continueOnError</code> - Whether to continue if transcript retrieval fails for a video. If true, all transcripts that could not be retrieved will be skipped,
-                        otherwise an exception will be thrown.</dd>
+<dd><code>request</code> - <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api"><code>TranscriptRequest</code></a> request object containing API key, cookies file path, and stop on error flag</dd>
 <dt>Returns:</dt>
 <dd>A map of video IDs to <a href="TranscriptList.html" title="interface in io.github.thoroldvix.api"><code>TranscriptList</code></a> objects</dd>
 <dt>Throws:</dt>
@@ -176,68 +172,70 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="listTranscriptsForPlaylist(java.lang.String,java.lang.String,boolean)">
-<h3>listTranscriptsForPlaylist</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptList.html" title="interface in io.github.thoroldvix.api">TranscriptList</a>&gt;</span>&nbsp;<span class="element-name">listTranscriptsForPlaylist</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;playlistId,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiKey,
- boolean&nbsp;continueOnError)</span>
-                                               throws <span class="exceptions"><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></span></div>
-<div class="block">Retrieves transcript lists for all videos in the specified playlist using provided API key.</div>
+<section class="detail" id="listTranscriptsForChannel(java.lang.String,io.github.thoroldvix.api.TranscriptRequest)">
+<h3>listTranscriptsForChannel</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptList.html" title="interface in io.github.thoroldvix.api">TranscriptList</a>&gt;</span>&nbsp;<span class="element-name">listTranscriptsForChannel</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;channelName,
+ <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api">TranscriptRequest</a>&nbsp;request)</span>
+                                              throws <span class="exceptions"><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></span></div>
+<div class="block">Retrieves transcript lists for all videos for the specified channel.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>channelName</code> - The name of the channel</dd>
+<dd><code>request</code> - <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api"><code>TranscriptRequest</code></a> request object containing API key, cookies file path, and stop on error flag</dd>
+<dt>Returns:</dt>
+<dd>A map of video IDs to <a href="TranscriptList.html" title="interface in io.github.thoroldvix.api"><code>TranscriptList</code></a> objects</dd>
+<dt>Throws:</dt>
+<dd><code><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></code> - If the retrieval of the transcript lists fails</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTranscriptsForPlaylist(java.lang.String,io.github.thoroldvix.api.TranscriptRequest,java.lang.String...)">
+<h3>getTranscriptsForPlaylist</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptContent.html" title="interface in io.github.thoroldvix.api">TranscriptContent</a>&gt;</span>&nbsp;<span class="element-name">getTranscriptsForPlaylist</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;playlistId,
+ <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api">TranscriptRequest</a>&nbsp;request,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;languageCodes)</span>
+                                                 throws <span class="exceptions"><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></span></div>
+<div class="block">Retrieves transcript content for all videos in the specified playlist.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>playlistId</code> - The ID of the playlist</dd>
-<dd><code>apiKey</code> - API key for the YouTube V3 API (see <a href="https://developers.google.com/youtube/v3/getting-started">Getting started</a>)</dd>
-<dd><code>continueOnError</code> - Whether to continue if transcript retrieval fails for a video. If true, all transcripts that could not be retrieved will be skipped,
-                        otherwise an exception will be thrown.</dd>
+<dd><code>request</code> - <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api"><code>TranscriptRequest</code></a> request object containing API key, cookies file path, and stop on error flag</dd>
+<dd><code>languageCodes</code> - A varargs list of language codes in descending priority.
+                      <p>
+                      For example:
+                      </p>
+                      If this is set to <code>("de", "en")</code>, it will first attempt to fetch the German transcript ("de"), and then fetch the English
+                      transcript ("en") if the former fails. If no language code is provided, it uses English as the default language.</dd>
 <dt>Returns:</dt>
-<dd>A map of video IDs to <a href="TranscriptList.html" title="interface in io.github.thoroldvix.api"><code>TranscriptList</code></a> objects</dd>
+<dd>A map of video IDs to <a href="TranscriptContent.html" title="interface in io.github.thoroldvix.api"><code>TranscriptContent</code></a> objects</dd>
 <dt>Throws:</dt>
-<dd><code><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></code> - If the retrieval of the transcript lists fails</dd>
+<dd><code><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></code> - If the retrieval of the transcript fails</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="listTranscriptsForChannel(java.lang.String,java.lang.String,java.lang.String,boolean)">
-<h3>listTranscriptsForChannel</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptList.html" title="interface in io.github.thoroldvix.api">TranscriptList</a>&gt;</span>&nbsp;<span class="element-name">listTranscriptsForChannel</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;channelName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiKey,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cookiesPath,
- boolean&nbsp;continueOnError)</span>
-                                              throws <span class="exceptions"><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></span></div>
-<div class="block">Retrieves transcript lists for all videos for the specified channel using provided API key and cookies file from a specified path.</div>
+<section class="detail" id="getTranscriptsForChannel(java.lang.String,io.github.thoroldvix.api.TranscriptRequest,java.lang.String...)">
+<h3>getTranscriptsForChannel</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptContent.html" title="interface in io.github.thoroldvix.api">TranscriptContent</a>&gt;</span>&nbsp;<span class="element-name">getTranscriptsForChannel</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;channelName,
+ <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api">TranscriptRequest</a>&nbsp;request,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;languageCodes)</span>
+                                                throws <span class="exceptions"><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></span></div>
+<div class="block">Retrieves transcript content for all videos for the specified channel.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>channelName</code> - The name of the channel</dd>
-<dd><code>apiKey</code> - API key for the YouTube V3 API (see <a href="https://developers.google.com/youtube/v3/getting-started">Getting started</a>)</dd>
-<dd><code>cookiesPath</code> - The file path to the text file containing the authentication cookies. Used in the case if some videos are age restricted see {<a href="https://github.com/Thoroldvix/youtube-transcript-api#cookies">Cookies</a>}</dd>
-<dd><code>continueOnError</code> - Whether to continue if transcript retrieval fails for a video. If true, all transcripts that could not be retrieved will be skipped,
-                        otherwise an exception will be thrown.</dd>
+<dd><code>request</code> - <a href="TranscriptRequest.html" title="class in io.github.thoroldvix.api"><code>TranscriptRequest</code></a> request object containing API key, cookies file path, and stop on error flag</dd>
+<dd><code>languageCodes</code> - A varargs list of language codes in descending priority.
+                      <p>
+                      For example:
+                      </p>
+                      If this is set to <code>("de", "en")</code>, it will first attempt to fetch the German transcript ("de"), and then fetch the English
+                      transcript ("en") if the former fails. If no language code is provided, it uses English as the default language.</dd>
 <dt>Returns:</dt>
-<dd>A map of video IDs to <a href="TranscriptList.html" title="interface in io.github.thoroldvix.api"><code>TranscriptList</code></a> objects</dd>
+<dd>A map of video IDs to <a href="TranscriptContent.html" title="interface in io.github.thoroldvix.api"><code>TranscriptContent</code></a> objects</dd>
 <dt>Throws:</dt>
-<dd><code><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></code> - If the retrieval of the transcript lists fails</dd>
-<dd><code><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></code> - If the retrieval of the transcript lists fails</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="listTranscriptsForChannel(java.lang.String,java.lang.String,boolean)">
-<h3>listTranscriptsForChannel</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="TranscriptList.html" title="interface in io.github.thoroldvix.api">TranscriptList</a>&gt;</span>&nbsp;<span class="element-name">listTranscriptsForChannel</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;channelName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiKey,
- boolean&nbsp;continueOnError)</span>
-                                              throws <span class="exceptions"><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></span></div>
-<div class="block">Retrieves transcript lists for all videos for the specified channel using provided API key.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>channelName</code> - The name of the channel</dd>
-<dd><code>apiKey</code> - API key for the YouTube V3 API (see <a href="https://developers.google.com/youtube/v3/getting-started">Getting started</a>)</dd>
-<dd><code>continueOnError</code> - Whether to continue if transcript retrieval fails for a video. If true, all transcripts that could not be retrieved will be skipped,
-                        otherwise an exception will be thrown.</dd>
-<dt>Returns:</dt>
-<dd>A map of video IDs to <a href="TranscriptList.html" title="interface in io.github.thoroldvix.api"><code>TranscriptList</code></a> objects</dd>
-<dt>Throws:</dt>
-<dd><code><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></code> - If the retrieval of the transcript lists fails</dd>
+<dd><code><a href="TranscriptRetrievalException.html" title="class in io.github.thoroldvix.api">TranscriptRetrievalException</a></code> - If the retrieval of the transcript fails</dd>
 </dl>
 </section>
 </li>
