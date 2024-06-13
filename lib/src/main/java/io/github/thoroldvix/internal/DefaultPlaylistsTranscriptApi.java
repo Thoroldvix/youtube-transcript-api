@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static io.github.thoroldvix.api.YtApiV3Endpoint.*;
 
@@ -32,43 +32,35 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
 
     @Override
     public Map<String, TranscriptList> listTranscriptsForPlaylist(String playlistId, String apiKey, String cookiesPath, boolean continueOnError) throws TranscriptRetrievalException {
-        Map<String, TranscriptList> transcriptLists = new HashMap<>();
+        Map<String, TranscriptList> transcriptLists = new ConcurrentHashMap<>();
         List<String> videoIds = getVideoIds(playlistId, apiKey);
-        ExecutorService executor = Executors.newCachedThreadPool();
 
-        List<Future<TranscriptList>> futures = new ArrayList<>();
-
-        for (String videoId : videoIds) {
-            futures.add(executor.submit(() -> {
-                try {
-                    return getTranscriptList(videoId, cookiesPath);
-                } catch (TranscriptRetrievalException e) {
-                    if (!continueOnError) throw e;
+        List<CompletableFuture<Void>> futures = videoIds.stream()
+                .map(videoId -> CompletableFuture.supplyAsync(() -> {
+                    try {
+                        return getTranscriptList(videoId, cookiesPath);
+                    } catch (TranscriptRetrievalException e) {
+                        if (!continueOnError) {
+                            throw new CompletionException(e);
+                        }
+                    }
                     return null;
-                }
-            }));
-        }
-
-        try {
-            for (Future<TranscriptList> future : futures) {
-                try {
-                    TranscriptList transcriptList = future.get();
+                }).thenAccept(transcriptList -> {
                     if (transcriptList != null) {
                         transcriptLists.put(transcriptList.getVideoId(), transcriptList);
                     }
-                } catch (ExecutionException e) {
-                    if (!continueOnError) {
-                        executor.shutdownNow();
-                        throw new TranscriptRetrievalException("Failed to retrieve transcripts for playlist: " + playlistId, e);
-                    }
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    executor.shutdownNow();
-                    throw new TranscriptRetrievalException("Failed to retrieve transcripts for playlist: " + playlistId, e);
-                }
+                }))
+                .collect(Collectors.toList());
+
+        try {
+            CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+            allOf.join();
+        } catch (CompletionException e) {
+            if (e.getCause() instanceof TranscriptRetrievalException) {
+                throw (TranscriptRetrievalException) e.getCause();
+            } else {
+                throw new TranscriptRetrievalException("Failed to retrieve transcripts for playlist: " + playlistId, e);
             }
-        } finally {
-            executor.shutdownNow();
         }
 
         return transcriptLists;
