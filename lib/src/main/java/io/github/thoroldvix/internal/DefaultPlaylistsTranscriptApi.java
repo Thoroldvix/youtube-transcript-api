@@ -30,28 +30,7 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
         this.youtubeTranscriptApi = youtubeTranscriptApi;
     }
 
-    @Override
-    public Map<String, TranscriptList> listTranscriptsForPlaylist(String playlistId, String apiKey, String cookiesPath, boolean continueOnError) throws TranscriptRetrievalException {
-        Map<String, TranscriptList> transcriptLists = new ConcurrentHashMap<>();
-        List<String> videoIds = getVideoIds(playlistId, apiKey);
-
-        List<CompletableFuture<Void>> futures = videoIds.stream()
-                .map(videoId -> CompletableFuture.supplyAsync(() -> {
-                    try {
-                        return getTranscriptList(videoId, cookiesPath);
-                    } catch (TranscriptRetrievalException e) {
-                        if (!continueOnError) {
-                            throw new CompletionException(e);
-                        }
-                    }
-                    return null;
-                }).thenAccept(transcriptList -> {
-                    if (transcriptList != null) {
-                        transcriptLists.put(transcriptList.getVideoId(), transcriptList);
-                    }
-                }))
-                .collect(Collectors.toList());
-
+    private static void joinFutures(List<CompletableFuture<Void>> futures, String playlistId) throws TranscriptRetrievalException {
         try {
             CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
             allOf.join();
@@ -62,45 +41,77 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
                 throw new TranscriptRetrievalException("Failed to retrieve transcripts for playlist: " + playlistId, e);
             }
         }
+    }
+
+    @Override
+    public Map<String, TranscriptList> listTranscriptsForPlaylist(String playlistId, TranscriptRequest request) throws TranscriptRetrievalException {
+        Map<String, TranscriptList> transcriptLists = new ConcurrentHashMap<>();
+        List<String> videoIds = getVideoIds(playlistId, request.getApiKey());
+
+        List<CompletableFuture<Void>> futures = videoIds.stream().map(videoId -> CompletableFuture.supplyAsync(() -> {
+            try {
+                return getTranscriptList(videoId, request.getCookiesPath());
+            } catch (TranscriptRetrievalException e) {
+                if (request.isStopOnError()) {
+                    throw new CompletionException(e);
+                }
+            }
+            return null;
+        }).thenAccept(transcriptList -> {
+            if (transcriptList != null) {
+                transcriptLists.put(transcriptList.getVideoId(), transcriptList);
+            }
+        })).collect(Collectors.toList());
+
+        joinFutures(futures, playlistId);
 
         return transcriptLists;
     }
 
-    private TranscriptList getTranscriptList(String videoId, String cookiesPath) throws TranscriptRetrievalException {
-        if (cookiesPath != null) {
-            return youtubeTranscriptApi.listTranscriptsWithCookies(videoId, cookiesPath);
-        }
-        return youtubeTranscriptApi.listTranscripts(videoId);
+    @Override
+    public Map<String, TranscriptList> listTranscriptsForChannel(String channelName, TranscriptRequest request) throws TranscriptRetrievalException {
+        String channelId = getChannelId(channelName, request.getApiKey());
+        String channelPlaylistId = getChannelPlaylistId(channelId, request.getApiKey());
+        return listTranscriptsForPlaylist(channelPlaylistId, request);
     }
 
     @Override
-    public Map<String, TranscriptList> listTranscriptsForPlaylist(String playlistId, String apiKey, boolean continueOnError) throws TranscriptRetrievalException {
-        return listTranscriptsForPlaylist(playlistId, apiKey, null, continueOnError);
+    public Map<String, TranscriptContent> getTranscriptsForPlaylist(String playlistId, TranscriptRequest request, String... languageCodes) throws TranscriptRetrievalException {
+        Map<String, TranscriptList> transcriptLists = listTranscriptsForPlaylist(playlistId, request);
+        Map<String, TranscriptContent> transcripts = new ConcurrentHashMap<>();
+
+        List<CompletableFuture<Void>> futures = transcriptLists.values().stream().map(transcriptList -> CompletableFuture.supplyAsync(() -> {
+            try {
+                return transcriptList.findTranscript(languageCodes).fetch();
+            } catch (TranscriptRetrievalException e) {
+                if (request.isStopOnError()) {
+                    throw new CompletionException(e);
+                }
+            }
+            return null;
+        }).thenAccept(transcriptContent -> {
+            if (transcriptContent != null) {
+                transcripts.put(transcriptList.getVideoId(), transcriptContent);
+            }
+        })).collect(Collectors.toList());
+
+        joinFutures(futures, playlistId);
+
+        return transcripts;
     }
 
     @Override
-    public Map<String, TranscriptList> listTranscriptsForChannel(String channelName, String apiKey, String cookiesPath, boolean continueOnError) throws TranscriptRetrievalException {
-        String channelId = getChannelId(channelName, apiKey);
-        String channelPlaylistId = getChannelPlaylistId(channelId, apiKey);
-        return listTranscriptsForPlaylist(channelPlaylistId, apiKey, cookiesPath, continueOnError);
+    public Map<String, TranscriptContent> getTranscriptsForChannel(String channelName, TranscriptRequest request, String... languageCodes) throws TranscriptRetrievalException {
+        String channelId = getChannelId(channelName, request.getApiKey());
+        String channelPlaylistId = getChannelPlaylistId(channelId, request.getApiKey());
+        return getTranscriptsForPlaylist(channelPlaylistId, request, languageCodes);
     }
-
-    @Override
-    public Map<String, TranscriptList> listTranscriptsForChannel(String channelName, String apiKey, boolean continueOnError) throws TranscriptRetrievalException {
-        return listTranscriptsForChannel(channelName, apiKey, null, continueOnError);
-    }
-
 
     private String getChannelPlaylistId(String channelId, String apiKey) throws TranscriptRetrievalException {
-        Map<String, String> params = createParams(
-                "key", apiKey,
-                "part", "contentDetails",
-                "id", channelId
-        );
+        Map<String, String> params = createParams("key", apiKey, "part", "contentDetails", "id", channelId);
         String channelJson = client.get(CHANNELS, params);
 
-        JsonNode jsonNode = parseJson(channelJson,
-                "Could not parse channel JSON for the channel with id: " + channelId);
+        JsonNode jsonNode = parseJson(channelJson, "Could not parse channel JSON for the channel with id: " + channelId);
 
         JsonNode channel = jsonNode.get("items").get(0);
 
@@ -108,17 +119,11 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
     }
 
     private String getChannelId(String channelName, String apiKey) throws TranscriptRetrievalException {
-        Map<String, String> params = createParams(
-                "key", apiKey,
-                "q", channelName,
-                "part", "snippet",
-                "type", "channel"
-        );
+        Map<String, String> params = createParams("key", apiKey, "q", channelName, "part", "snippet", "type", "channel");
 
         String searchJson = client.get(SEARCH, params);
 
-        JsonNode jsonNode = parseJson(searchJson,
-                "Could not parse search JSON for the channel: " + channelName);
+        JsonNode jsonNode = parseJson(searchJson, "Could not parse search JSON for the channel: " + channelName);
 
         for (JsonNode item : jsonNode.get("items")) {
             JsonNode snippet = item.get("snippet");
@@ -132,19 +137,13 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
 
 
     private List<String> getVideoIds(String playlistId, String apiKey) throws TranscriptRetrievalException {
-        Map<String, String> params = createParams(
-                "key", apiKey,
-                "playlistId", playlistId,
-                "part", "snippet",
-                "maxResults", "50"
-        );
+        Map<String, String> params = createParams("key", apiKey, "playlistId", playlistId, "part", "snippet", "maxResults", "50");
 
         List<String> videoIds = new ArrayList<>();
 
         while (true) {
             String playlistJson = client.get(PLAYLIST_ITEMS, params);
-            JsonNode jsonNode = parseJson(playlistJson,
-                    "Could not parse playlist JSON for the playlist: " + playlistId);
+            JsonNode jsonNode = parseJson(playlistJson, "Could not parse playlist JSON for the playlist: " + playlistId);
             extractVideoId(jsonNode, videoIds);
             JsonNode nextPageToken = jsonNode.get("nextPageToken");
 
@@ -160,10 +159,7 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
 
     private void extractVideoId(JsonNode jsonNode, List<String> videoIds) {
         jsonNode.get("items").forEach(item -> {
-            String videoId = item.get("snippet")
-                    .get("resourceId")
-                    .get("videoId")
-                    .asText();
+            String videoId = item.get("snippet").get("resourceId").get("videoId").asText();
             videoIds.add(videoId);
         });
     }
@@ -182,5 +178,12 @@ class DefaultPlaylistsTranscriptApi implements PlaylistsTranscriptApi {
         } catch (JsonProcessingException e) {
             throw new TranscriptRetrievalException(errorMessage, e);
         }
+    }
+
+    private TranscriptList getTranscriptList(String videoId, String cookiesPath) throws TranscriptRetrievalException {
+        if (cookiesPath != null) {
+            return youtubeTranscriptApi.listTranscriptsWithCookies(videoId, cookiesPath);
+        }
+        return youtubeTranscriptApi.listTranscripts(videoId);
     }
 }
