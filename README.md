@@ -81,11 +81,8 @@ for [finding specific transcripts](#find-transcripts) by language or by type (ma
 TranscriptList transcriptList = youtubeTranscriptApi.listTranscripts("videoId");
 
 // Iterate over transcript list
-for(
-Transcript transcript :transcriptList){
-        System.out.
-
-println(transcript);
+for(Transcript transcript : transcriptList) {
+        System.out.println(transcript);
 }
 
 // Find transcript in specific language
