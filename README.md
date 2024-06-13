@@ -81,8 +81,11 @@ for [finding specific transcripts](#find-transcripts) by language or by type (ma
 TranscriptList transcriptList = youtubeTranscriptApi.listTranscripts("videoId");
 
 // Iterate over transcript list
-for(Transcript transcript : transcriptList) {
-        System.out.println(transcript);
+for(
+Transcript transcript :transcriptList){
+        System.out.
+
+println(transcript);
 }
 
 // Find transcript in specific language
@@ -290,47 +293,48 @@ Playlists and channels information is retrieved from
 the [YouTube V3 API](https://developers.google.com/youtube/v3/docs/),
 so you will need to provide API key for all methods.
 
+All methods take a `TranscriptRequest` object as a parameter,
+which contains the following fields:
+
+- `apiKey` - YouTube API key.
+- `stopOnError`(optional, defaults to `true`) - Whether to stop on the first error or continue. If true, the method will
+  fail fast by throwing an error if one of the transcripts could not be retrieved,
+  otherwise it will ignore failed transcripts.
+
+- `cookies` (optional) - Path to [cookies.txt](#cookies) file.
+
+All methods return a map which contains the video ID as a key and the corresponding result as a value.
+
 ```java
 // Create a new default PlaylistsTranscriptApi instance
 PlaylistsTranscriptApi playlistsTranscriptApi = TranscriptApiFactory.createDefaultPlaylistsApi();
 
+//Create request object
+TranscriptRequest request = new TranscriptRequest("apiKey");
+
 // Retrieve all available transcripts for a given playlist
-Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForPlaylist(
-        "playlistId",
-        "apiKey",
-        true);
+Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForPlaylist("playlistId", request);
 
 // Retrieve all available transcripts for a given channel
-Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForChannel(
-        "channelName",
-        "apiKey",
-        true);
+Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForChannel("channelName", request);
 ```
 
-As you can see, there is also a boolean flag `continueOnError`, which tells whether to continue if transcript retrieval
-fails for a video or not. For example, if it's set to `true`, all transcripts that could not be retrieved will be
-skipped, if
-it's set to `false`, operation will fail fast on the first error.
-
-All methods are also have overloaded versions which accept path to [cookies.txt](#cookies) file.
+Same as with the `YoutubeTranscriptApi`, you can also fetch transcript content directly
+using [fallback languages](#use-fallback-language) if needed.
 
 ```java
-// Retrieve all available transcripts for a given playlist
-Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForPlaylist(
-        "playlistId",
-        "apiKey",
-        true,
-        "path/to/cookies.txt"
-);
+//Create request object
+TranscriptRequest request = new TranscriptRequest("apiKey");
 
-// Retrieve all available transcripts for a given channel
-Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForChannel(
-        "channelName",
-        "apiKey",
-        true,
-        "path/to/cookies.txt"
-);
+// Retrieve transcript content for all videos in a playlist
+Map<String, TranscriptContent> transcriptLists = playlistsTranscriptApi.getTranscriptsForPlaylist("playlistId", request);
+
+// Retrieve transcript content for all videos in a channel
+Map<String, TranscriptContent> transcriptLists = playlistsTranscriptApi.getTranscriptsForChannel("channelName", request, "en, de");
 ```
+
+> **Note:** If you want to get transcript content in a different format, refer
+> to [Use Formatters](#use-formatters).
 
 ## 🤓 How it works
 

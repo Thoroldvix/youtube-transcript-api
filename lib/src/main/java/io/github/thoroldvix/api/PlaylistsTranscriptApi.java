@@ -8,6 +8,11 @@ import java.util.Map;
  * Retrieves transcripts for all videos in a playlist, or all videos for a specific channel.
  * <p>
  * Playlists and channel videos are retrieved from the YouTube API, so you will need to have a valid api key to use this.
+ * <p>
+ * All methods take a {@link TranscriptRequest} object as a parameter, which contains API key, cookies file path (optional), and stop on error flag (optional, defaults to true).
+ * If cookies are not provided, the API will not be able to access age restricted videos, see <a href="https://github.com/Thoroldvix/youtube-transcript-api#cookies">Cookies</a>.
+ * <p>
+ * {@link TranscriptRequest} also contains a flag to stop on error, or continue on error.
  * </p>
  * <p>
  * To get implementation for this interface see {@link TranscriptApiFactory}
@@ -16,56 +21,59 @@ import java.util.Map;
 public interface PlaylistsTranscriptApi {
 
     /**
-     * Retrieves transcript lists for all videos in the specified playlist using provided API key and cookies file from a specified path.
+     * Retrieves transcript lists for all videos in the specified playlist.
      *
-     * @param playlistId      The ID of the playlist
-     * @param apiKey          API key for the YouTube V3 API (see <a href="https://developers.google.com/youtube/v3/getting-started">Getting started</a>)
-     * @param continueOnError Whether to continue if transcript retrieval fails for a video. If true, all transcripts that could not be retrieved will be skipped,
-     *                        otherwise an exception will be thrown.
-     * @param cookiesPath     The file path to the text file containing the authentication cookies. Used in the case if some videos are age restricted see {<a href="https://github.com/Thoroldvix/youtube-transcript-api#cookies">Cookies</a>}
+     * @param playlistId The ID of the playlist
+     * @param request    {@link TranscriptRequest} request object containing API key, cookies file path, and stop on error flag
      * @return A map of video IDs to {@link TranscriptList} objects
      * @throws TranscriptRetrievalException If the retrieval of the transcript lists fails
      */
-    Map<String, TranscriptList> listTranscriptsForPlaylist(String playlistId, String apiKey, String cookiesPath, boolean continueOnError) throws TranscriptRetrievalException;
+    Map<String, TranscriptList> listTranscriptsForPlaylist(String playlistId, TranscriptRequest request) throws TranscriptRetrievalException;
 
 
     /**
-     * Retrieves transcript lists for all videos in the specified playlist using provided API key.
+     * Retrieves transcript lists for all videos for the specified channel.
      *
-     * @param playlistId      The ID of the playlist
-     * @param apiKey          API key for the YouTube V3 API (see <a href="https://developers.google.com/youtube/v3/getting-started">Getting started</a>)
-     * @param continueOnError Whether to continue if transcript retrieval fails for a video. If true, all transcripts that could not be retrieved will be skipped,
-     *                        otherwise an exception will be thrown.
+     * @param channelName The name of the channel
+     * @param request     {@link TranscriptRequest} request object containing API key, cookies file path, and stop on error flag
      * @return A map of video IDs to {@link TranscriptList} objects
      * @throws TranscriptRetrievalException If the retrieval of the transcript lists fails
      */
-    Map<String, TranscriptList> listTranscriptsForPlaylist(String playlistId, String apiKey, boolean continueOnError) throws TranscriptRetrievalException;
+    Map<String, TranscriptList> listTranscriptsForChannel(String channelName, TranscriptRequest request) throws TranscriptRetrievalException;
 
 
     /**
-     * Retrieves transcript lists for all videos for the specified channel using provided API key and cookies file from a specified path.
+     * Retrieves transcript content for all videos in the specified playlist.
      *
-     * @param channelName     The name of the channel
-     * @param apiKey          API key for the YouTube V3 API (see <a href="https://developers.google.com/youtube/v3/getting-started">Getting started</a>)
-     * @param cookiesPath     The file path to the text file containing the authentication cookies. Used in the case if some videos are age restricted see {<a href="https://github.com/Thoroldvix/youtube-transcript-api#cookies">Cookies</a>}
-     * @param continueOnError Whether to continue if transcript retrieval fails for a video. If true, all transcripts that could not be retrieved will be skipped,
-     *                        otherwise an exception will be thrown.
-     * @return A map of video IDs to {@link TranscriptList} objects
-     * @throws TranscriptRetrievalException If the retrieval of the transcript lists fails
-     * @throws TranscriptRetrievalException If the retrieval of the transcript lists fails
+     * @param playlistId    The ID of the playlist
+     * @param request       {@link TranscriptRequest} request object containing API key, cookies file path, and stop on error flag
+     * @param languageCodes A varargs list of language codes in descending priority.
+     *                      <p>
+     *                      For example:
+     *                      </p>
+     *                      If this is set to {@code ("de", "en")}, it will first attempt to fetch the German transcript ("de"), and then fetch the English
+     *                      transcript ("en") if the former fails. If no language code is provided, it uses English as the default language.
+     * @return A map of video IDs to {@link TranscriptContent} objects
+     * @throws TranscriptRetrievalException If the retrieval of the transcript fails
      */
-    Map<String, TranscriptList> listTranscriptsForChannel(String channelName, String apiKey, String cookiesPath, boolean continueOnError) throws TranscriptRetrievalException;
+    Map<String, TranscriptContent> getTranscriptsForPlaylist(String playlistId,
+                                                             TranscriptRequest request,
+                                                             String... languageCodes) throws TranscriptRetrievalException;
 
 
     /**
-     * Retrieves transcript lists for all videos for the specified channel using provided API key.
+     * Retrieves transcript content for all videos for the specified channel.
      *
-     * @param channelName     The name of the channel
-     * @param apiKey          API key for the YouTube V3 API (see <a href="https://developers.google.com/youtube/v3/getting-started">Getting started</a>)
-     * @param continueOnError Whether to continue if transcript retrieval fails for a video. If true, all transcripts that could not be retrieved will be skipped,
-     *                        otherwise an exception will be thrown.
-     * @return A map of video IDs to {@link TranscriptList} objects
-     * @throws TranscriptRetrievalException If the retrieval of the transcript lists fails
+     * @param channelName   The name of the channel
+     * @param request       {@link TranscriptRequest} request object containing API key, cookies file path, and stop on error flag
+     * @param languageCodes A varargs list of language codes in descending priority.
+     *                      <p>
+     *                      For example:
+     *                      </p>
+     *                      If this is set to {@code ("de", "en")}, it will first attempt to fetch the German transcript ("de"), and then fetch the English
+     *                      transcript ("en") if the former fails. If no language code is provided, it uses English as the default language.
+     * @return A map of video IDs to {@link TranscriptContent} objects
+     * @throws TranscriptRetrievalException If the retrieval of the transcript fails
      */
-    Map<String, TranscriptList> listTranscriptsForChannel(String channelName, String apiKey, boolean continueOnError) throws TranscriptRetrievalException;
+    Map<String, TranscriptContent> getTranscriptsForChannel(String channelName, TranscriptRequest request, String... languageCodes) throws TranscriptRetrievalException;
 }
