@@ -295,10 +295,16 @@ so you will need to provide API key for all methods.
 PlaylistsTranscriptApi playlistsTranscriptApi = TranscriptApiFactory.createDefaultPlaylistsApi();
 
 // Retrieve all available transcripts for a given playlist
-Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForPlaylist("playlistId", "apiKey", true);
+Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForPlaylist(
+        "playlistId",
+        "apiKey",
+        true);
 
 // Retrieve all available transcripts for a given channel
-Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForChannel("channelName", "apiKey", true);
+Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForChannel(
+        "channelName",
+        "apiKey",
+        true);
 ```
 
 As you can see, there is also a boolean flag `continueOnError`, which tells whether to continue if transcript retrieval
