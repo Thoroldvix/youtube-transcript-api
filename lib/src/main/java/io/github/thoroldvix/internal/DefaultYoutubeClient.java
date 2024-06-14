@@ -64,7 +64,7 @@ final class DefaultYoutubeClient implements YoutubeClient {
         try {
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException e) {
-            throw new TranscriptRetrievalException(String.format(errorMessage, endpoint), e);
+            throw new TranscriptRetrievalException(errorMessage, e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new TranscriptRetrievalException(errorMessage, e);
