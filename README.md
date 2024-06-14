@@ -327,7 +327,7 @@ TranscriptRequest request = new TranscriptRequest("apiKey");
 Map<String, TranscriptContent> transcriptLists = playlistsTranscriptApi.getTranscriptsForPlaylist("playlistId", request);
 
 // Retrieve transcript content for all videos in a channel
-Map<String, TranscriptContent> transcriptLists = playlistsTranscriptApi.getTranscriptsForChannel("channelName", request, "en, de");
+Map<String, TranscriptContent> transcriptLists = playlistsTranscriptApi.getTranscriptsForChannel("channelName", request, "en", "de");
 ```
 
 > **Note:** If you want to get transcript content in a different format, refer
