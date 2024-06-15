@@ -1,7 +1,7 @@
 package io.github.thoroldvix.api;
 
 /**
- * Request object for retrieving transcripts from {@link PlaylistsTranscriptApi}.
+ * Request object for retrieving transcripts.
  * <p>
  * Contains API key required for the YouTube V3 API,
  * and optionally a file path to the text file containing the authentication cookies. If cookies are not provided, the API will not be able to access age restricted videos.
