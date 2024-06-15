@@ -42,9 +42,8 @@ final class DefaultTranscript implements Transcript {
     @Override
     public TranscriptContent fetch() throws TranscriptRetrievalException {
         String transcriptXml = client.get(apiUrl, Map.of("Accept-Language", "en-US"));
-        TranscriptContentXML transcriptXML = new TranscriptContentXML(transcriptXml, videoId);
-
-        return transcriptXML.transcriptContent();
+        TranscriptContentExtractor extractor = new TranscriptContentExtractor(videoId);
+        return extractor.extract(transcriptXml);
     }
 
     @Override

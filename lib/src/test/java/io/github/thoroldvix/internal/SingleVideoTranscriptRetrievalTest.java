@@ -1,15 +1,14 @@
 package io.github.thoroldvix.internal;
 
 
-import io.github.thoroldvix.api.*;
+import io.github.thoroldvix.api.Transcript;
+import io.github.thoroldvix.api.TranscriptContent;
+import io.github.thoroldvix.api.TranscriptList;
+import io.github.thoroldvix.api.TranscriptRetrievalException;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,33 +22,17 @@ import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-class DefaultYoutubeTranscriptApiTest {
-
-    private static final String YOUTUBE_WATCH_URL = "https://www.youtube.com/watch?v=";
-    private static final String RESOURCE_PATH = "src/test/resources/";
-    private static final String VIDEO_ID = "dQw4w9WgXcQ";
-
+class SingleVideoTranscriptRetrievalTest extends TranscriptRetrievalTest {
     private static String YOUTUBE_HTML;
+    private static final String VIDEO_ID = "dQw4w9WgXcQ";
     private static String TRANSCRIPT_XML;
     private static String CONSENT_PAGE_HTML;
-
-    private YoutubeClient client;
-    private FileLinesReader fileLinesReader;
-    private YoutubeTranscriptApi youtubeTranscriptApi;
 
     @BeforeAll
     static void beforeAll() throws IOException {
         YOUTUBE_HTML = Files.readString(Path.of(RESOURCE_PATH, "pages/youtube.html.static"));
         TRANSCRIPT_XML = Files.readString(Path.of(RESOURCE_PATH, "transcript.xml"));
         CONSENT_PAGE_HTML = Files.readString(Path.of(RESOURCE_PATH, "pages/youtube_consent_page.html.static"));
-    }
-
-    @BeforeEach
-    void setUp() {
-        client = mock(YoutubeClient.class);
-        fileLinesReader = Mockito.mock(FileLinesReader.class);
-        youtubeTranscriptApi = new DefaultYoutubeTranscriptApi(client, fileLinesReader);
     }
 
     private void givenVideoPageHtml(String html) throws Exception {

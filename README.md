@@ -282,10 +282,8 @@ TranscriptContent transcriptContent = youtubeTranscriptApi.getTranscriptWithCook
 
 ### Bulk Transcript Retrieval
 
-All bulk transcript retrieval operations are done via the `PlaylistsTranscriptApi` interface. Same as with the
-`YoutubeTranscriptApi`,
-you can create a new instance of the PlaylistsTranscriptApi by calling the `createDefaultPlaylistsApi` method of the
-`TranscriptApiFactory`.
+There are a few methods for bulk transcript retrieval in `YoutubeTranscriptApi` 
+
 Playlists and channels information is retrieved from
 the [YouTube V3 API](https://developers.google.com/youtube/v3/docs/),
 so you will need to provide API key for all methods.
@@ -304,19 +302,19 @@ All methods return a map which contains the video ID as a key and the correspond
 
 ```java
 // Create a new default PlaylistsTranscriptApi instance
-PlaylistsTranscriptApi playlistsTranscriptApi = TranscriptApiFactory.createDefaultPlaylistsApi();
+YoutubeTranscriptApi youtubeTranscriptApi = TranscriptApiFactory.createDefault();
 
 //Create request object
 TranscriptRequest request = new TranscriptRequest("apiKey");
 
 // Retrieve all available transcripts for a given playlist
-Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForPlaylist("playlistId", request);
+Map<String, TranscriptList> transcriptLists = youtubeTranscriptApi.listTranscriptsForPlaylist("playlistId", request);
 
 // Retrieve all available transcripts for a given channel
-Map<String, TranscriptList> transcriptLists = playlistsTranscriptApi.listTranscriptsForChannel("channelName", request);
+Map<String, TranscriptList> transcriptLists = youtubeTranscriptApi.listTranscriptsForChannel("channelName", request);
 ```
 
-Same as with the `YoutubeTranscriptApi`, you can also fetch transcript content directly
+Same as with the `getTranscript` method, you can also fetch transcript content directly
 using [fallback languages](#use-fallback-language) if needed.
 
 ```java
@@ -324,10 +322,10 @@ using [fallback languages](#use-fallback-language) if needed.
 TranscriptRequest request = new TranscriptRequest("apiKey");
 
 // Retrieve transcript content for all videos in a playlist
-Map<String, TranscriptContent> transcriptLists = playlistsTranscriptApi.getTranscriptsForPlaylist("playlistId", request);
+Map<String, TranscriptContent> transcriptLists = youtubeTranscriptApi.getTranscriptsForPlaylist("playlistId", request);
 
 // Retrieve transcript content for all videos in a channel
-Map<String, TranscriptContent> transcriptLists = playlistsTranscriptApi.getTranscriptsForChannel("channelName", request, "en", "de");
+Map<String, TranscriptContent> transcriptLists = youtubeTranscriptApi.getTranscriptsForChannel("channelName", request, "en", "de");
 ```
 
 > **Note:** If you want to get transcript content in a different format, refer

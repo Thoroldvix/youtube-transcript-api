@@ -15,24 +15,28 @@ import java.util.stream.Collectors;
 /**
  * Responsible for extracting transcript content from xml.
  */
-final class TranscriptContentXML {
+final class TranscriptContentExtractor {
 
-    private final XmlMapper xmlMapper;
-    private final String xml;
     private final String videoId;
+    private static final XmlMapper XML_MAPPER = new XmlMapper();
 
-    TranscriptContentXML(String xml, String videoId) {
-        this.xmlMapper = new XmlMapper();
-        this.xml = xml;
+    TranscriptContentExtractor(String videoId) {
         this.videoId = videoId;
     }
 
     private static List<Fragment> formatFragments(List<Fragment> fragments) {
         return fragments.stream()
-                .filter(TranscriptContentXML::isValidTranscriptFragment)
-                .map(TranscriptContentXML::removeHtmlTags)
-                .map(TranscriptContentXML::unescapeXmlTags)
+                .filter(TranscriptContentExtractor::isValidTranscriptFragment)
+                .map(TranscriptContentExtractor::removeHtmlTags)
+                .map(TranscriptContentExtractor::unescapeXmlTags)
                 .collect(Collectors.toList());
+    }
+
+    TranscriptContent extract(String xml) throws TranscriptRetrievalException {
+        List<Fragment> fragments = parseFragments(xml);
+        List<Fragment> content = formatFragments(fragments);
+
+        return new DefaultTranscriptContent(content);
     }
 
     private static Fragment unescapeXmlTags(Fragment fragment) {
@@ -50,16 +54,9 @@ final class TranscriptContentXML {
         return fragment.getText() != null && !fragment.getText().isBlank();
     }
 
-    TranscriptContent transcriptContent() throws TranscriptRetrievalException {
-        List<Fragment> fragments = parseFragments();
-        List<Fragment> content = formatFragments(fragments);
-
-        return new DefaultTranscriptContent(content);
-    }
-
-    private List<Fragment> parseFragments() throws TranscriptRetrievalException {
+    private List<Fragment> parseFragments(String xml) throws TranscriptRetrievalException {
         try {
-            return xmlMapper.readValue(xml, new TypeReference<>() {
+            return XML_MAPPER.readValue(xml, new TypeReference<>() {
             });
         } catch (JsonProcessingException e) {
             throw new TranscriptRetrievalException(videoId, "Failed to parse transcript content XML.", e);

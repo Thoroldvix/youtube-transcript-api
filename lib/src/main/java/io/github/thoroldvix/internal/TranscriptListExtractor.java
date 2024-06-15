@@ -15,10 +15,9 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
- * Represents transcript JSON which is extracted from a video page HTML.
- * It contains methods for retrieving transcript data from JSON.
+ * Extracts transcript list from video page HTML.
  */
-final class TranscriptListJSON {
+final class TranscriptListExtractor {
 
     private static final String TOO_MANY_REQUESTS = "YouTube is receiving too many requests from this IP and now requires solving a captcha to continue. " +
                                                     "One of the following things can be done to work around this:\n" +
@@ -29,21 +28,19 @@ final class TranscriptListJSON {
                                                     "- Wait until the ban on your IP has been lifted";
     private static final String TRANSCRIPTS_DISABLED = "Transcripts are disabled for this video.";
 
-    private final JsonNode json;
     private final YoutubeClient client;
     private final String videoId;
 
-    private TranscriptListJSON(JsonNode json, YoutubeClient client, String videoId) {
-        this.json = json;
+    TranscriptListExtractor(YoutubeClient client, String videoId) {
         this.client = client;
         this.videoId = videoId;
     }
 
-    static TranscriptListJSON from(String videoPageHtml, YoutubeClient client, String videoId) throws TranscriptRetrievalException {
+    TranscriptList extract(String videoPageHtml) throws TranscriptRetrievalException {
         String json = getJsonFromHtml(videoPageHtml, videoId);
-        JsonNode parsedJson = parseJson(json, videoId);
-        checkIfTranscriptsDisabled(videoId, parsedJson);
-        return new TranscriptListJSON(parsedJson, client, videoId);
+        JsonNode parsedJson = parseJson(json);
+        checkIfTranscriptsDisabled(parsedJson);
+        return createTranscriptList(parsedJson);
     }
 
     private static String getJsonFromHtml(String videoPageHtml, String videoId) throws TranscriptRetrievalException {
@@ -67,7 +64,7 @@ final class TranscriptListJSON {
         }
     }
 
-    private static JsonNode parseJson(String json, String videoId) throws TranscriptRetrievalException {
+    private JsonNode parseJson(String json) throws TranscriptRetrievalException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode parsedJson;
         try {
@@ -78,7 +75,7 @@ final class TranscriptListJSON {
         return parsedJson;
     }
 
-    private static void checkIfTranscriptsDisabled(String videoId, JsonNode parsedJson) throws TranscriptRetrievalException {
+    private void checkIfTranscriptsDisabled(JsonNode parsedJson) throws TranscriptRetrievalException {
         if (parsedJson == null) {
             throw new TranscriptRetrievalException(videoId, TRANSCRIPTS_DISABLED);
         }
@@ -87,11 +84,15 @@ final class TranscriptListJSON {
         }
     }
 
-    TranscriptList transcriptList() {
-        return new DefaultTranscriptList(videoId, getManualTranscripts(), getGeneratedTranscripts(), getTranslationLanguages());
+    private TranscriptList createTranscriptList(JsonNode jsonNode) {
+        return new DefaultTranscriptList(videoId,
+                getManualTranscripts(jsonNode),
+                getGeneratedTranscripts(jsonNode),
+                getTranslationLanguages(jsonNode)
+        );
     }
 
-    private Map<String, String> getTranslationLanguages() {
+    private Map<String, String> getTranslationLanguages(JsonNode json) {
         if (!json.has("translationLanguages")) {
             return Collections.emptyMap();
         }
@@ -102,16 +103,16 @@ final class TranscriptListJSON {
                 ));
     }
 
-    private Map<String, Transcript> getManualTranscripts() {
-        return getTranscripts(client, jsonNode -> !jsonNode.has("kind"));
+    private Map<String, Transcript> getManualTranscripts(JsonNode json) {
+        return getTranscripts(json, jsonNode -> !jsonNode.has("kind"));
     }
 
-    private Map<String, Transcript> getGeneratedTranscripts() {
-        return getTranscripts(client, jsonNode -> jsonNode.has("kind"));
+    private Map<String, Transcript> getGeneratedTranscripts(JsonNode json) {
+        return getTranscripts(json, jsonNode -> jsonNode.has("kind"));
     }
 
-    private Map<String, Transcript> getTranscripts(YoutubeClient client, Predicate<JsonNode> filter) {
-        Map<String, String> translationLanguages = getTranslationLanguages();
+    private Map<String, Transcript> getTranscripts(JsonNode json, Predicate<JsonNode> filter) {
+        Map<String, String> translationLanguages = getTranslationLanguages(json);
         return StreamSupport.stream(json.get("captionTracks").spliterator(), false)
                 .filter(filter)
                 .map(jsonNode -> getTranscript(client, jsonNode, translationLanguages))
