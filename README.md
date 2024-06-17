@@ -30,8 +30,6 @@ Inspired by [Python library](https://github.com/jdepoix/youtube-transcript-api).
 
 ✅ Easy-to-use API
 
-✅ Minimal dependencies (Jackson for XML/JSON processing and Apache Commons Text for XML tag unescaping)
-
 ✅ Supports Java 11 and above
 
 ## 🛠️ Installation
