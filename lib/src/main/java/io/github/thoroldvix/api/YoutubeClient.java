@@ -33,25 +33,5 @@ public interface YoutubeClient {
      * @throws TranscriptRetrievalException If the request to YouTube fails.
      */
     String get(YtApiV3Endpoint endpoint, Map<String, String> params) throws TranscriptRetrievalException;
-
-
-    /**
-     * Creates a string representation of the specified parameters.
-     *
-     * @param params A map of parameters to include in the request.
-     *
-     * @return A string representation of the specified parameters.
-     */
-    default String createParamsString(Map<String, String> params) {
-        StringBuilder paramString = new StringBuilder();
-
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            String value = entry.getValue().replaceAll(" ", "%20");
-            paramString.append(entry.getKey()).append("=").append(value).append("&");
-        }
-
-        paramString.deleteCharAt(paramString.length() - 1);
-        return paramString.toString();
-    }
 }
 

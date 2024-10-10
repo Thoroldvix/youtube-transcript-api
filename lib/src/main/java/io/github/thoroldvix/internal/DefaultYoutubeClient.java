@@ -1,15 +1,16 @@
 package io.github.thoroldvix.internal;
 
-import io.github.thoroldvix.api.TranscriptRetrievalException;
-import io.github.thoroldvix.api.YoutubeClient;
-import io.github.thoroldvix.api.YtApiV3Endpoint;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
+
+import io.github.thoroldvix.api.TranscriptRetrievalException;
+import io.github.thoroldvix.api.YoutubeClient;
+import io.github.thoroldvix.api.YtApiV3Endpoint;
+
 
 /**
  * Default implementation of {@link YoutubeClient}.
@@ -54,10 +55,9 @@ final class DefaultYoutubeClient implements YoutubeClient {
 
     @Override
     public String get(YtApiV3Endpoint endpoint, Map<String, String> params) throws TranscriptRetrievalException {
-        String paramsString = createParamsString(params);
         String errorMessage = String.format("Request to YouTube '%s' endpoint failed.", endpoint);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(endpoint.url() + "?" + paramsString))
+                .uri(URI.create(endpoint.url(params)))
                 .build();
 
         HttpResponse<String> response;
