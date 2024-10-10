@@ -41,20 +41,20 @@ Inspired by [Python library](https://github.com/jdepoix/youtube-transcript-api).
 <dependency>
     <groupId>io.github.thoroldvix</groupId>
     <artifactId>youtube-transcript-api</artifactId>
-    <version>0.3.5</version>
+    <version>0.3.6</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation 'io.github.thoroldvix:youtube-transcript-api:0.3.5'
+implementation 'io.github.thoroldvix:youtube-transcript-api:0.3.6'
 ```
 
 ### Gradle (kts)
 
 ```kotlin
-implementation("io.github.thoroldvix:youtube-transcript-api:0.3.5")
+implementation("io.github.thoroldvix:youtube-transcript-api:0.3.6")
 ```
 
 ## 🔰 Getting Started
