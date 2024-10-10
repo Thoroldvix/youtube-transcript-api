@@ -77,22 +77,6 @@ final class DefaultYoutubeClient implements YoutubeClient {
         return response.body();
     }
 
-    private String createParamsString(Map<String, String> params) {
-        StringBuilder paramString = new StringBuilder();
-
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            String value = formatValue(entry.getValue());
-            paramString.append(entry.getKey()).append("=").append(value).append("&");
-        }
-
-        paramString.deleteCharAt(paramString.length() - 1);
-        return paramString.toString();
-    }
-
-    private String formatValue(String value) {
-        return value.replaceAll(" ", "%20");
-    }
-
     private String[] createHeaders(Map<String, String> headers) {
         String[] headersArray = new String[headers.size() * 2];
         int i = 0;
