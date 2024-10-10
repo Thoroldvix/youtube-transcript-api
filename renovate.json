@@ -4,6 +4,6 @@
     "config:base",
     ":dependencyDashboard",
     ":semanticCommits",
-    "schedule:weekly"
+    "schedule:monthly"
   ]
 }
