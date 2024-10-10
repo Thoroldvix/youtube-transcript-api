@@ -249,7 +249,7 @@ String formattedContent = jsonFormatter.format(transcriptContent);
 By default, `YoutubeTranscriptApi` uses Java 11 HttpClient for making requests to YouTube, if you want to use a
 different client,
 you can create your own YouTube client by implementing the `YoutubeClient` interface and passing it to
-the `YoutubeTranscriptApiFactory` `createWithClient` method.
+the `TranscriptApiFactory` `createWithClient` method.
 
 ```java
 // Create a new custom YoutubeClient
