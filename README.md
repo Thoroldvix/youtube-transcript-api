@@ -10,7 +10,7 @@
 ### This library uses undocumented YouTube API, so it's possible that it will stop working at any time. Use at your own risk.
 
 > **Note:** If you want to use this library on Android platform, refer to
-> [Android compatibility](#android-compatibility).
+> [Android compatibility](#-android-compatibility).
 
 ## 📖 Introduction
 
