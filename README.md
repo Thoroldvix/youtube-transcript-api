@@ -9,6 +9,9 @@
 
 ### This library uses undocumented YouTube API, so it's possible that it will stop working at any time. Use at your own risk.
 
+> **Note:** If you want to use this library on Android platform, refer to
+> [Android compatibility](#android-compatibility).
+
 ## 📖 Introduction
 
 Java library which allows you to retrieve subtitles/transcripts for a YouTube video.
@@ -16,7 +19,7 @@ It supports manual and automatically generated subtitles, bulk transcript retrie
 on the channel and does not use headless browser for scraping.
 Inspired by [Python library](https://github.com/jdepoix/youtube-transcript-api).
 
-## 🤖 Features
+## ☑️ Features
 
 ✅ Manual transcripts retrieval
 
@@ -146,6 +149,13 @@ TranscriptContent transcriptContent = youtubeTranscriptApi.getTranscript("videoI
 
 For bulk transcript retrieval see [Bulk Transcript Retrieval](#bulk-transcript-retrieval).
 
+## 🤖 Android compatibility
+This library uses Java 11 HttpClient for making YouTube request by default, it was done so it depends on minimal amount
+of 3rd party libraries. Since Android SDK doesn't include Java 11 HttpClient, you will have to implement
+your own `YoutubeClient` for it to work.
+
+You can check example implementation in [YoutubeClient Customization and Proxy](#youtubeclient-customization-and-proxy).
+
 ## 🔧 Detailed Usage
 
 ### Use fallback language
@@ -248,15 +258,59 @@ String formattedContent = jsonFormatter.format(transcriptContent);
 
 By default, `YoutubeTranscriptApi` uses Java 11 HttpClient for making requests to YouTube, if you want to use a
 different client or use a proxy,
-you can create your own YouTube client by implementing the `YoutubeClient` interface and passing it to
-the `TranscriptApiFactory` `createWithClient` method.
+you can create your own YouTube client by implementing the `YoutubeClient` interface.
+
+Here is example implementation using OkHttp:
 
 ```java
-// Create a new custom YoutubeClient
-YoutubeClient youtubeClient = new MyCustomYoutubeClient();
+public class OkHttpYoutubeClient implements YoutubeClient {
 
-// Create YoutubeTranscriptApi instance with custom YouTubeClient
-YoutubeTranscriptApi youtubeTranscriptApi = TranscriptApiFactory.createWithClient(youtubeClient);
+    private final OkHttpClient client;
+
+    public OkHttpYoutubeClient(OkHttpClient client) {
+        this.client = client;
+    }
+
+    @Override
+    public String get(String url, Map<String, String> headers) throws TranscriptRetrievalException {
+        Request request = new Request.Builder()
+                .headers(Headers.of(headers))
+                .url(url)
+                .build();
+
+        return sendGetRequest(request);
+    }
+
+    @Override
+    public String get(YtApiV3Endpoint endpoint, Map<String, String> params) throws TranscriptRetrievalException {
+        Request request = new Request.Builder()
+                .url(endpoint.url(params))
+                .build();
+
+        return sendGetRequest(request);
+    }
+
+    private String sendGetRequest(Request request) throws TranscriptRetrievalException {
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                ResponseBody body = response.body();
+                if (body == null) {
+                    throw new TranscriptRetrievalException("Response body is null");
+                }
+                return body.string();
+            }
+        } catch (IOException e) {
+            throw new TranscriptRetrievalException("Failed to retrieve data from YouTube", e);
+        }
+        throw new TranscriptRetrievalException("Failed to retrieve data from YouTube");
+    }
+}
+```
+After implementing your custom `YouTubeClient` you will need to pass it to `TranscriptApiFactory` `createWithClient` method.
+
+```java
+YoutubeClient okHttpClient = new OkHttpYoutubeClient();
+YoutubeTranscriptApi youtubeTranscriptApi = TranscriptApiFactory.createWithClient(okHttpClient);
 ```
 
 ### Cookies
