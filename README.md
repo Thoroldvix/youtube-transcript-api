@@ -154,7 +154,7 @@ This library uses Java 11 HttpClient for making YouTube request by default, it w
 of 3rd party libraries. Since Android SDK doesn't include Java 11 HttpClient, you will have to implement
 your own `YoutubeClient` for it to work.
 
-You can check example implementation in [YoutubeClient Customization and Proxy](#youtubeclient-customization-and-proxy).
+You can check how to do it in [YoutubeClient Customization and Proxy](#youtubeclient-customization-and-proxy).
 
 ## 🔧 Detailed Usage
 
