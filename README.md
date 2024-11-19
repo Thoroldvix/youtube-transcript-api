@@ -150,7 +150,7 @@ TranscriptContent transcriptContent = youtubeTranscriptApi.getTranscript("videoI
 For bulk transcript retrieval see [Bulk Transcript Retrieval](#bulk-transcript-retrieval).
 
 ## 🤖 Android compatibility
-This library uses Java 11 HttpClient for making YouTube request by default, it was done so it depends on minimal amount
+This library uses Java 11 HttpClient for making YouTube requests by default, it was done so it depends on minimal amount
 of 3rd party libraries. Since Android SDK doesn't include Java 11 HttpClient, you will have to implement
 your own `YoutubeClient` for it to work.
 
