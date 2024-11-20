@@ -267,8 +267,8 @@ public class OkHttpYoutubeClient implements YoutubeClient {
 
     private final OkHttpClient client;
 
-    public OkHttpYoutubeClient(OkHttpClient client) {
-        this.client = client;
+    public OkHttpYoutubeClient() {
+      this.client = new OkHttpClient();
     }
 
     @Override
