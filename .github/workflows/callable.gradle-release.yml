@@ -24,7 +24,7 @@ jobs:
           fi
 
       - name: Checkout project sources ('main' branch)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: main
           token: ${{ secrets.CI_GITHUB_TOKEN }}
